@@ -12,14 +12,11 @@ import java.math.BigDecimal;
 
 /**
  * Entidade abstrata (Pai) que define atributos comuns a qualquer insumo consumido no processo WAAM.
- * Localização: src/main/java/com/inovalayer/mada/core/domain/
  */
 @Getter
 @Setter
 @Entity
 @Table(name = "tb_consumivel")
-// Estratégia JOINED: O Hibernate criará a tabela 'tb_consumivel' com os campos básicos,
-// e tabelas filhas separadas para Arame e Gás, ligadas por Chave Estrangeira (FK).
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Consumivel extends BaseEntity {
 
@@ -29,12 +26,10 @@ public abstract class Consumivel extends BaseEntity {
     @Column(name = "codigo_produto", unique = true, length = 50)
     private String codigoProduto;
 
-    // Preço unitário base. A unidade (kg ou litro) será inferida pela classe filha.
-    @Column(name = "preco_unitario_base", nullable = false, precision = 10, scale = 2)
+    // CORREÇÃO: Precisão ampliada para rigor metrológico (precision = 19, scale = 6)
+    @Column(name = "preco_unitario_base", nullable = false, precision = 19, scale = 6)
     private BigDecimal precoUnitarioBase;
 
-    // Controle de inativação lógica (Soft Delete). 
-    // Nunca apagamos um consumível do banco para não corromper histórico de Machine Learning.
     @Column(name = "ativo", nullable = false)
     private Boolean ativo = true;
 }
