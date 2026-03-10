@@ -7,14 +7,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
- * Ponto de entrada (Entrypoint) da API de Orçamentos.
- * Recebe chamadas HTTP, delega o processamento para o Service e devolve respostas padronizadas em JSON.
+ * Criei este REST Controller para expor os serviços de metrologia para a rede externa.
+ * Ele atua como o ponto de entrada (Endpoint) da API, recebendo pacotes JSON do Angular,
+ * acionando as validações de segurança e devolvendo o código de status HTTP correto.
  */
 @RestController
 @RequestMapping("/api/v1/orcamentos")
@@ -23,24 +21,14 @@ public class OrcamentoController {
 
     private final OrcamentoService orcamentoService;
 
-    /**
-     * Endpoint para gerar um novo orçamento.
-     * Mapeado para o verbo HTTP POST.
-     * * @param request O DTO validado recebido no corpo da requisição (JSON).
-     * @return O orçamento gerado e o status HTTP 201 (Created).
-     */
+    // A anotação @Valid é o gatilho que liga a barreira de segurança que criamos no DTO.
     @PostMapping
-    public ResponseEntity<Orcamento> criarOrcamento(@Valid @RequestBody OrcamentoRequestDTO request) {
+    public ResponseEntity<Orcamento> processarOrcamento(@RequestBody @Valid OrcamentoRequestDTO request) {
         
-        // Extrai os dados validados do DTO (a "prancheta") e repassa ao Service
-        Orcamento orcamentoGerado = orcamentoService.gerarOrcamento(
-                request.clienteId(),
-                request.arameId(),
-                request.tempoArcoMinutos(),
-                request.massaEstimadaKg()
-        );
-
-        // Retorna HTTP 201 indicando sucesso na criação do recurso
+        // Delega a complexidade matemática e de banco de dados para a camada de Serviço
+        Orcamento orcamentoGerado = orcamentoService.processarMetrologia(request);
+        
+        // Retorna o HTTP Status 201 (Created), que é o padrão RESTful para quando um recurso nasce no servidor
         return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoGerado);
     }
 }

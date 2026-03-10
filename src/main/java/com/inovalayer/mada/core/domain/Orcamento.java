@@ -1,56 +1,60 @@
 package com.inovalayer.mada.core.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
- * A Entidade Raiz (Root Aggregate). Une os dados do Python com as taxas do Banco.
- * Localização: src/main/java/com/inovalayer/mada/core/domain/
+ * Criei esta entidade central para gerir os documentos de orçamento da metrologia.
+ * Ela estabelece o relacionamento (Foreign Key) com os insumos físicos e
+ * encapsula o rigor financeiro exigido para o cálculo de custos em ambiente industrial.
  */
-@Getter
-@Setter
 @Entity
 @Table(name = "tb_orcamento")
-public class Orcamento extends BaseEntity {
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class Orcamento {
 
-    // --- Relacionamentos (Chaves Estrangeiras) ---
-    // Muito para Um: Vários orçamentos podem pertencer ao mesmo Cliente.
-    @ManyToOne(optional = false) // optional = false garante que não existe orçamento sem cliente (Integridade)
-    @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @EqualsAndHashCode.Include
+    private UUID id;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 30)
+    private StatusOrcamento status;
 
-    // Referências aos consumíveis escolhidos para ESTA peça.
-    @ManyToOne(optional = false)
+    // Defini o relacionamento como LAZY para otimizar o consumo de memória do servidor.
+    // O Hibernate apenas executará o JOIN com a tabela de Arames quando eu invocar explicitamente getArameMetalico().
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "arame_metalico_id", nullable = false)
     private ArameMetalico arameMetalico;
 
-    // --- Dados Crutos Extraídos do JSON do Paulo (Python) ---
-    @Column(name = "tempo_arco_aberto_minutos", nullable = false, precision = 10, scale = 2)
-    private BigDecimal tempoArcoAbertoMinutos;
+    // Métricas físicas recolhidas pelo Front-end / Python
+    @Column(name = "tempo_arco_minutos", nullable = false)
+    private Double tempoArcoMinutos;
 
-    @Column(name = "massa_estimada_kg", nullable = false, precision = 10, scale = 3)
-    private BigDecimal massaEstimadaKg;
+    @Column(name = "massa_estimada_kg", nullable = false)
+    private Double massaEstimadaKg;
 
-    // --- CAMPOS DE SNAPSHOT (A Proteção contra Inflação) ---
-    // Ao invés de buscar o preço atual do arame na hora de exibir a tela, 
-    // nós copiamos o valor para cá no momento do cálculo. (Conceito Imutabilidade)
-    @Column(name = "snap_preco_kg_arame_aplicado", nullable = false, precision = 10, scale = 2)
-    private BigDecimal snapPrecoKgArameAplicado;
+    // Apliquei precisão financeira de 12 dígitos totais e 2 casas decimais (Padrão Monetário).
+    @Column(name = "custo_material", nullable = false, precision = 12, scale = 2)
+    private BigDecimal custoMaterial;
 
-    @Column(name = "snap_custo_kwh_aplicado", nullable = false, precision = 10, scale = 4)
-    private BigDecimal snapCustoKwhAplicado;
+    @Column(name = "custo_operacional", nullable = false, precision = 12, scale = 2)
+    private BigDecimal custoOperacional;
 
-    // --- Resultado Final Matemático ---
-    @Column(name = "custo_total_calculado", nullable = false, precision = 12, scale = 2)
-    private BigDecimal custoTotalCalculado;
+    @Column(name = "custo_total_final", nullable = false, precision = 12, scale = 2)
+    private BigDecimal custoTotalFinal;
 
-    @Column(name = "status_orcamento", nullable = false, length = 30) // Ex: PENDENTE, APROVADO, REJEITADO (No futuro, usaremos Enum)
-    private String statusOrcamento = "PENDENTE";
+    // Registo imutável do momento exato da emissão do documento para efeitos de auditoria.
+    @CreationTimestamp
+    @Column(name = "data_emissao", nullable = false, updatable = false)
+    private LocalDateTime dataEmissao;
 }

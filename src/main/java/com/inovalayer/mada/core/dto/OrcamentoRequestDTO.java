@@ -2,30 +2,26 @@ package com.inovalayer.mada.core.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
- * Record DTO para receber os dados de entrada da criação de um orçamento.
- * Ele atua como um "filtro" (Prancheta da Recepção), garantindo que apenas 
- * os dados estritamente necessários entrem no sistema.
+ * Projetei este DTO (record) para atuar como a barreira de validação primária (Fail-Fast).
+ * Ele intercepta o JSON vindo do Front-end e garante que os dados obedeçam às leis
+ * da física e da lógica antes de passarem para a camada de serviço e banco de dados.
  */
 public record OrcamentoRequestDTO(
         
-        @NotNull(message = "O ID do cliente é obrigatório.")
-        UUID clienteId,
-
-        @NotNull(message = "O ID do arame metálico é obrigatório.")
+        // A anotação @NotNull bloqueia requisições onde o Angular esqueceu de enviar o ID.
+        @NotNull(message = "O identificador do insumo (Arame) é obrigatório.")
         UUID arameId,
 
+        // A anotação @Positive impede matematicamente que o usuário ou um hacker
+        // envie um "tempo de arco" negativo (ex: -10 minutos), o que corromperia o custo.
         @NotNull(message = "O tempo de arco aberto é obrigatório.")
-        @Positive(message = "O tempo de arco aberto deve ser maior que zero.")
-        BigDecimal tempoArcoMinutos,
+        @Positive(message = "O tempo de arco deve ser maior que zero.")
+        Double tempoArcoMinutos,
 
         @NotNull(message = "A massa estimada é obrigatória.")
         @Positive(message = "A massa estimada deve ser maior que zero.")
-        BigDecimal massaEstimadaKg
-) {
-    // Um record não precisa de construtor, getters ou setters explícitos. 
-    // O compilador Java gera tudo automaticamente.
-}
+        Double massaEstimadaKg
+) {}

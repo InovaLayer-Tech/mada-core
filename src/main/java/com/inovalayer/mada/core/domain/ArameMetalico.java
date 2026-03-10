@@ -1,32 +1,29 @@
 package com.inovalayer.mada.core.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 /**
- * Entidade filha (Especialização) de Consumível, focada nos parâmetros do metal de adição.
- * Localização: src/main/java/com/inovalayer/mada/core/domain/
+ * Criei esta entidade para representar o insumo físico na metrologia.
+ * Ela herda da classe abstrata Consumivel, garantindo que o banco de dados
+ * faça o JOIN automático entre os dados físicos (desta tabela) e os comerciais (da tabela pai).
  */
-@Getter
-@Setter
 @Entity
 @Table(name = "tb_arame_metalico")
-// Herda ID e campos básicos de tb_consumivel. O JPA gerencia a inserção em ambas as tabelas automaticamente.
+@PrimaryKeyJoinColumn(name = "id")
+@Getter
+@Setter
 public class ArameMetalico extends Consumivel {
 
-    @Column(name = "liga_metalica", nullable = false, length = 80) // Ex: ER70S-6, Inox 316L
+    // Especifiquei o tamanho da coluna no banco para otimizar o armazenamento.
+    @Column(name = "liga_metalica", nullable = false, length = 100)
     private String ligaMetalica;
 
-    @Column(name = "diametro_mm", nullable = false, precision = 4, scale = 2) // Ex: 1.20 mm
-    private BigDecimal diametroMm;
+    // Utilizo Double para grandezas físicas contínuas, mantendo o rigor exigido nos cálculos de engenharia.
+    @Column(name = "diametro_mm", nullable = false)
+    private Double diametroMm;
 
-    // Crucial para conversão: Se o Python devolver o volume da peça (cm³), 
-    // multiplicamos por esta densidade para saber quantos KG de arame foram gastos.
-    @Column(name = "densidade_g_cm3", nullable = false, precision = 6, scale = 3)
-    private BigDecimal densidadeGCm3;
+    @Column(name = "densidade_g_cm3", nullable = false)
+    private Double densidadeGcm3;
 }

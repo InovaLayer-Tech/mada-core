@@ -1,35 +1,45 @@
 package com.inovalayer.mada.core.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
- * Entidade abstrata (Pai) que define atributos comuns a qualquer insumo consumido no processo WAAM.
+ * Criei esta classe base abstrata para centralizar os dados comerciais (nome, fabricante, preço).
+ * Utilizo a estratégia JOINED para que o banco de dados normalize essas informações em uma tabela 'pai',
+ * garantindo o princípio DRY (Don't Repeat Yourself) para qualquer novo insumo que eu criar no futuro.
  */
-@Getter
-@Setter
 @Entity
 @Table(name = "tb_consumivel")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Consumivel extends BaseEntity {
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public abstract class Consumivel {
 
-    @Column(name = "nome_fabricante", nullable = false, length = 100)
-    private String nomeFabricante;
+    // Utilizei a anotação Include para garantir que o equals() do Java compare os objetos apenas pelo ID,
+    // evitando bugs de performance quando eu trabalhar com listas ou coleções no Hibernate.
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @EqualsAndHashCode.Include
+    private UUID id;
 
-    @Column(name = "codigo_produto", unique = true, length = 50)
+    @Column(nullable = false, length = 100)
+    private String nome;
+
+    @Column(nullable = false, length = 100)
+    private String fabricante;
+
+    // Apliquei a restrição unique=true para blindar o banco contra a duplicidade de SKUs/Códigos de produto.
+    @Column(name = "codigo_produto", nullable = false, unique = true, length = 50)
     private String codigoProduto;
 
-    // CORREÇÃO: Precisão ampliada para rigor metrológico (precision = 19, scale = 6)
-    @Column(name = "preco_unitario_base", nullable = false, precision = 19, scale = 6)
+    // Defini a precisão máxima de 12 dígitos com 6 casas decimais rigorosas.
+    // Isso é mandatório para que o cálculo financeiro do Spring Boot não divirja do motor metrológico em Python.
+    @Column(name = "preco_unitario_base", nullable = false, precision = 12, scale = 6)
     private BigDecimal precoUnitarioBase;
-
-    @Column(name = "ativo", nullable = false)
-    private Boolean ativo = true;
 }

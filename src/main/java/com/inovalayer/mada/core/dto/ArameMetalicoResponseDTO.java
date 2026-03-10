@@ -4,14 +4,22 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
- * DTO (Data Transfer Object) para blindar a entidade ArameMetalico.
- * Garante que a interface Angular receba apenas os dados necessários para o formulário,
- * ocultando informações sensíveis de auditoria ou regras internas de banco.
+ * Projetei este DTO utilizando a estrutura 'record' introduzida nas versões recentes do Java.
+ * Ele atua como um contrato de rede estrito (API Contract) entre o Back-end e o Angular.
+ * Ele achata a hierarquia do banco de dados, entregando num único pacote os dados da tabela
+ * pai (Consumível) e da tabela filha (Arame).
  */
 public record ArameMetalicoResponseDTO(
         UUID id,
-        String nomeFabricante,
+        
+        // Mapeamento Comercial (Tabela Consumivel)
+        // Mantive a nomenclatura 'nomeFabricante' para respeitar o contrato existente no HTML do Angular.
+        String nomeFabricante, 
         String codigoProduto,
-        BigDecimal precoUnitarioBase
-) {
-}
+        BigDecimal precoUnitarioBase,
+        
+        // Mapeamento Físico (Tabela ArameMetalico)
+        String ligaMetalica,
+        Double diametroMm,
+        Double densidadeGcm3
+) {}

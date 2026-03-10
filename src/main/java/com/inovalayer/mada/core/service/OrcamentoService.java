@@ -1,72 +1,72 @@
 package com.inovalayer.mada.core.service;
 
 import com.inovalayer.mada.core.domain.ArameMetalico;
-import com.inovalayer.mada.core.domain.Cliente;
 import com.inovalayer.mada.core.domain.Orcamento;
-import com.inovalayer.mada.core.domain.ParametroGlobal;
-import com.inovalayer.mada.core.repository.ArameMetalicoRepository;
-import com.inovalayer.mada.core.repository.ClienteRepository;
-import com.inovalayer.mada.core.repository.OrcamentoRepository;
-import com.inovalayer.mada.core.repository.ParametroGlobalRepository;
+import com.inovalayer.mada.core.domain.StatusOrcamento;
+import com.inovalayer.mada.core.dto.OrcamentoRequestDTO;
+import com.inovalayer.mada.core.repository.ArameMetalicoRepository; // Assumindo que você já tem esta interface
+import com.inovalayer.mada.core.repository.OrcamentoRepository;     // Assumindo que você já tem esta interface
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.UUID; // Correção: Importação vital para o reconhecimento do tipo UUID
+import java.math.RoundingMode;
 
 /**
- * Serviço central do projeto MADA.
- * Orquestra dados de múltiplas tabelas para gerar o custo final da Peça Única.
+ * Criei este Service como o orquestrador das regras de negócio.
+ * Ele é responsável por aplicar o cálculo metrológico-financeiro, garantindo a
+ * integridade transacional (ACID) antes de persistir o documento no PostgreSQL.
  */
 @Service
 @RequiredArgsConstructor
 public class OrcamentoService {
 
+    // A injeção via construtor com variáveis 'final' garante a imutabilidade do serviço.
     private final OrcamentoRepository orcamentoRepository;
-    private final ClienteRepository clienteRepository;
-    private final ArameMetalicoRepository arameRepository;
-    private final ParametroGlobalRepository parametroRepository;
+    private final ArameMetalicoRepository arameMetalicoRepository;
 
-    /**
-     * Gera um novo orçamento baseado nos dados crus vindos do Python e consolida os custos.
-     */
+    // Constante temporária de custo hora-máquina (R$ 150,00).
+    // Conforme o nosso Diagrama de Classes, no futuro buscaremos isto da tabela ConfiguracaoSistema.
+    private static final BigDecimal TAXA_HORA_MAQUINA = new BigDecimal("150.00");
+
     @Transactional
-    public Orcamento gerarOrcamento(UUID clienteId, UUID arameId, BigDecimal tempoArcoMinutos, BigDecimal massaEstimadaKg) {
+    public Orcamento processarMetrologia(OrcamentoRequestDTO request) {
         
-        // 1. Validar a existência das entidades na base de dados
-        Cliente cliente = clienteRepository.findById(clienteId)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado com o ID fornecido."));
+        // 1. Busca Segura (Fail-Fast)
+        ArameMetalico arame = arameMetalicoRepository.findById(request.arameId())
+                .orElseThrow(() -> new IllegalArgumentException("O insumo selecionado não existe no catálogo."));
+
+        // 2. Conversão de Grandezas
+        BigDecimal massa = BigDecimal.valueOf(request.massaEstimadaKg());
+        BigDecimal tempoMinutos = BigDecimal.valueOf(request.tempoArcoMinutos());
+
+        // 3. Regra de Negócio Financeira (Matemática de Precisão)
         
-        ArameMetalico arame = arameRepository.findById(arameId)
-                .orElseThrow(() -> new IllegalArgumentException("Arame Metálico não encontrado com o ID fornecido."));
+        // Custo Material = Massa (kg) * Preço Unitário (R$/kg)
+        BigDecimal custoMaterial = arame.getPrecoUnitarioBase().multiply(massa)
+                .setScale(2, RoundingMode.HALF_UP);
 
-        // Busca o primeiro parâmetro global configurado (assumindo que só existe uma linha ativa de taxas)
-        ParametroGlobal parametros = parametroRepository.findAll().stream().findFirst()
-                .orElseThrow(() -> new IllegalStateException("Taxas globais não configuradas no sistema."));
+        // Custo Operacional = (Tempo em Minutos / 60) * Taxa da Máquina (R$/h)
+        // Uso escala 6 na divisão para evitar a ArithmeticException (dízimas periódicas)
+        BigDecimal horasOperacao = tempoMinutos.divide(new BigDecimal("60"), 6, RoundingMode.HALF_UP);
+        BigDecimal custoOperacional = horasOperacao.multiply(TAXA_HORA_MAQUINA)
+                .setScale(2, RoundingMode.HALF_UP);
 
-        // 2. Instanciar o novo orçamento
-        Orcamento novoOrcamento = new Orcamento();
-        novoOrcamento.setCliente(cliente);
-        novoOrcamento.setArameMetalico(arame);
-        novoOrcamento.setTempoArcoAbertoMinutos(tempoArcoMinutos);
-        novoOrcamento.setMassaEstimadaKg(massaEstimadaKg);
+        // Custo Total = Material + Operacional
+        BigDecimal custoTotal = custoMaterial.add(custoOperacional);
 
-        // 3. REGRA DE NEGÓCIO: Snapshotting (Congelamento de preços históricos)
-        novoOrcamento.setSnapPrecoKgArameAplicado(arame.getPrecoUnitarioBase());
-        novoOrcamento.setSnapCustoKwhAplicado(parametros.getCustoKwh());
+        // 4. Montagem do Documento (State Machine)
+        Orcamento orcamento = new Orcamento();
+        orcamento.setArameMetalico(arame);
+        orcamento.setTempoArcoMinutos(request.tempoArcoMinutos());
+        orcamento.setMassaEstimadaKg(request.massaEstimadaKg());
+        orcamento.setCustoMaterial(custoMaterial);
+        orcamento.setCustoOperacional(custoOperacional);
+        orcamento.setCustoTotalFinal(custoTotal);
+        orcamento.setStatus(StatusOrcamento.PENDENTE); // Status inicial blindado pelo Enum
 
-        // 4. REGRA DE NEGÓCIO: O Cálculo Matemático (Core do LAPROSOLDA)
-        // Custo Material = Massa (kg) * Preço do Arame (R$/kg)
-        BigDecimal custoMaterial = massaEstimadaKg.multiply(novoOrcamento.getSnapPrecoKgArameAplicado());
-        
-        // Custo Total (Provisório MVP) = Custo Material * Margem de Lucro
-        BigDecimal custoTotal = custoMaterial.multiply(parametros.getMargemLucroPercentual());
-        
-        novoOrcamento.setCustoTotalCalculado(custoTotal);
-        novoOrcamento.setStatusOrcamento("PENDENTE");
-
-        // 5. Persistir na base de dados
-        return orcamentoRepository.save(novoOrcamento);
+        // 5. Persistência
+        return orcamentoRepository.save(orcamento);
     }
 }
