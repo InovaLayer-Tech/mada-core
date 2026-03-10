@@ -1,5 +1,4 @@
-package com.inovalayer.mada_core;
-
+package com.inovalayer.mada.core;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

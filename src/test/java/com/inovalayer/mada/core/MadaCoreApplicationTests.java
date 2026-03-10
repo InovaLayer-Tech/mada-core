@@ -1,5 +1,4 @@
-package com.inovalayer.mada_core;
-
+package com.inovalayer.mada.core;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
