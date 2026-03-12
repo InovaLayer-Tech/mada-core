@@ -5,22 +5,22 @@ import com.inovalayer.mada.core.dto.ArameMetalicoResponseDTO;
 import org.springframework.stereotype.Component;
 
 /**
- * Criei este Mapper como um Componente gerenciado pelo Spring (Injeção de Dependência).
- * Ele centraliza a responsabilidade única (SRP do SOLID) de converter a Entidade física
- * do banco de dados no DTO de transporte que o Angular espera, achatando a herança.
+ * Componente (Singleton) responsável pelo mapeamento da entidade ArameMetalico para seu respectivo DTO.
+ * Centraliza a conversão e protege a camada de Service de lidar com regras de formatação de dados.
  */
 @Component
 public class ArameMetalicoMapper {
 
-    public ArameMetalicoResponseDTO toResponseDTO(ArameMetalico entity) {
+    public ArameMetalicoResponseDTO toDto(ArameMetalico entity) {
         if (entity == null) {
-            return null;
+            return null; // Null-safety: previne NullPointerException no Service
         }
 
-        // Mapeio explicitamente o 'fabricante' (da classe pai Consumivel) 
-        // para o 'nomeFabricante' que o contrato do Front-end exige.
+        // Instanciação direta do Record. Os atributos 'nome' e 'fabricante'
+        // são herdados automaticamente da superclasse Consumivel (Estratégia JOINED).
         return new ArameMetalicoResponseDTO(
                 entity.getId(),
+                entity.getNome(),
                 entity.getFabricante(),
                 entity.getCodigoProduto(),
                 entity.getPrecoUnitarioBase(),

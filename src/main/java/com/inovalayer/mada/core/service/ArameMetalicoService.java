@@ -1,40 +1,38 @@
 package com.inovalayer.mada.core.service;
 
-import com.inovalayer.mada.core.domain.ArameMetalico;
 import com.inovalayer.mada.core.dto.ArameMetalicoResponseDTO;
 import com.inovalayer.mada.core.mapper.ArameMetalicoMapper;
 import com.inovalayer.mada.core.repository.ArameMetalicoRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Criei este Service para isolar a lógica de leitura do catálogo de insumos.
- * Ele orquestra a busca na base de dados e a imediata conversão (mapeamento)
- * para o formato DTO, garantindo que a Entidade física nunca vaze para a rede externa.
+ * Serviço responsável pela orquestração de dados referentes aos Arames Metálicos.
+ * Atua como intermediário entre a camada de controle (API) e acesso a dados (Repository).
  */
 @Service
-@RequiredArgsConstructor
 public class ArameMetalicoService {
 
-    private final ArameMetalicoRepository arameMetalicoRepository;
-    private final ArameMetalicoMapper arameMetalicoMapper;
+    private final ArameMetalicoRepository repository;
+    private final ArameMetalicoMapper mapper;
 
-    // A anotação readOnly = true otimiza a performance do banco de dados,
-    // informando ao Hibernate que não faremos alterações (INSERT/UPDATE), 
-    // dispensando o custoso controle de estado na memória (Dirty Checking).
+    // Injeção de dependência via construtor (Padrão Ouro do Spring Boot)
+    public ArameMetalicoService(ArameMetalicoRepository repository, ArameMetalicoMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
+
+    /**
+     * Retorna a lista completa de arames metálicos mapeados para DTO.
+     * * @return Lista contendo os dados de transferência (ArameMetalicoResponseDTO)
+     */
     @Transactional(readOnly = true)
     public List<ArameMetalicoResponseDTO> listarTodos() {
-        
-        // 1. Busca todas as entidades físicas na base de dados
-        List<ArameMetalico> arames = arameMetalicoRepository.findAll();
-
-        // 2. Converte as Entidades em DTOs usando a API de Streams do Java (Programação Funcional)
-        return arames.stream()
-                .map(arameMetalicoMapper::toResponseDTO)
-                .collect(Collectors.toList());
+        return repository.findAll()
+                .stream()
+                .map(mapper::toDto)
+                .toList(); // Método nativo do Java 16+ para fechamento de Streams
     }
 }
