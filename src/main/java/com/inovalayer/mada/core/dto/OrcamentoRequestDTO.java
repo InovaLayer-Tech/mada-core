@@ -11,32 +11,32 @@ import java.util.UUID;
  */
 public record OrcamentoRequestDTO(
         
-        @NotNull(message = "O identificador do insumo (Arame) é obrigatório.")
+        @NotNull(message = "{Validacao.Arame.NotNull}")
         UUID arameId,
 
         // --- FASE 1 (IC) ---
-        @NotNull(message = "O tempo de preparação é obrigatório.")
-        @Positive(message = "O tempo de preparação deve ser maior que zero.")
+        @NotNull(message = "{Validacao.TempoPreparacao.NotNull}")
+        @Positive(message = "{Validacao.TempoPreparacao.Positive}")
         Double tempoPreparacaoMinutos,
 
-        @NotNull(message = "O tempo de remoção é obrigatório.")
-        @Positive(message = "O tempo de remoção deve ser maior que zero.")
+        @NotNull(message = "{Validacao.TempoRemocao.NotNull}")
+        @Positive(message = "{Validacao.TempoRemocao.Positive}")
         Double tempoRemocaoMinutos,
 
         // --- FASE 2 (DC) ---
-        @NotNull(message = "O tempo de arco aberto é obrigatório.")
-        @Positive(message = "O tempo de arco deve ser maior que zero.")
+        @NotNull(message = "{Validacao.TempoArco.NotNull}")
+        @Positive(message = "{Validacao.TempoArco.Positive}")
         Double tempoArcoMinutos,
 
-        @NotNull(message = "A massa estimada é obrigatória.")
-        @Positive(message = "A massa estimada deve ser maior que zero.")
+        @NotNull(message = "{Validacao.MassaEstimada.NotNull}")
+        @Positive(message = "{Validacao.MassaEstimada.Positive}")
         Double massaEstimadaKg,
 
         // --- FASE 3 (AC) --- Intenções
-        @NotNull(message = "A intenção de Projeto CAD é obrigatória.")
+        @NotNull(message = "{Validacao.ProjetoCAD.NotNull}")
         Boolean requerProjetoCAD,
 
-        @NotNull(message = "A intenção de Usinagem Final é obrigatória.")
+        @NotNull(message = "{Validacao.UsinagemFinal.NotNull}")
         Boolean requerUsinagemFinal,
         
         // Se requerUsinagemFinal = true, o Front deverá enviar este valor
