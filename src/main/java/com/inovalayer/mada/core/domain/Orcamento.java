@@ -9,6 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Criei esta entidade central para gerir os documentos de orçamento da metrologia.
@@ -30,25 +32,16 @@ public class Orcamento {
     @Column(name = "status", nullable = false, length = 30)
     private StatusOrcamento status;
 
-    // Defini o relacionamento como LAZY para otimizar o consumo de memória do servidor.
-    // O Hibernate apenas executará o JOIN com a tabela de Arames quando eu invocar explicitamente getArameMetalico().
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "arame_metalico_id", nullable = false)
-    private ArameMetalico arameMetalico;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "orcamento_ic_id")
+    private OrcamentoIC fase1IC;
 
-    // Métricas físicas recolhidas pelo Front-end / Python
-    @Column(name = "tempo_arco_minutos", nullable = false)
-    private Double tempoArcoMinutos;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "orcamento_dc_id")
+    private OrcamentoDC fase2DC;
 
-    @Column(name = "massa_estimada_kg", nullable = false)
-    private Double massaEstimadaKg;
-
-    // Apliquei precisão financeira de 12 dígitos totais e 2 casas decimais (Padrão Monetário).
-    @Column(name = "custo_material", nullable = false, precision = 12, scale = 2)
-    private BigDecimal custoMaterial;
-
-    @Column(name = "custo_operacional", nullable = false, precision = 12, scale = 2)
-    private BigDecimal custoOperacional;
+    @OneToMany(mappedBy = "orcamento", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrcamentoAC> fase3AC = new ArrayList<>();
 
     @Column(name = "custo_total_final", nullable = false, precision = 12, scale = 2)
     private BigDecimal custoTotalFinal;

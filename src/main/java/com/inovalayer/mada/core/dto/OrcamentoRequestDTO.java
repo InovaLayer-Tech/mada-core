@@ -5,23 +5,40 @@ import jakarta.validation.constraints.Positive;
 import java.util.UUID;
 
 /**
- * Projetei este DTO (record) para atuar como a barreira de validação primária (Fail-Fast).
- * Ele intercepta o JSON vindo do Front-end e garante que os dados obedeçam às leis
- * da física e da lógica antes de passarem para a camada de serviço e banco de dados.
+ * Record DTO atuando como barreira de validação primária.
+ * Recebe APENAS características FÍSICAS da peça e intenções de projeto.
+ * Variáveis financeiras e taxas estão blindadas.
  */
 public record OrcamentoRequestDTO(
         
-        // A anotação @NotNull bloqueia requisições onde o Angular esqueceu de enviar o ID.
         @NotNull(message = "O identificador do insumo (Arame) é obrigatório.")
         UUID arameId,
 
-        // A anotação @Positive impede matematicamente que o usuário ou um hacker
-        // envie um "tempo de arco" negativo (ex: -10 minutos), o que corromperia o custo.
+        // --- FASE 1 (IC) ---
+        @NotNull(message = "O tempo de preparação é obrigatório.")
+        @Positive(message = "O tempo de preparação deve ser maior que zero.")
+        Double tempoPreparacaoMinutos,
+
+        @NotNull(message = "O tempo de remoção é obrigatório.")
+        @Positive(message = "O tempo de remoção deve ser maior que zero.")
+        Double tempoRemocaoMinutos,
+
+        // --- FASE 2 (DC) ---
         @NotNull(message = "O tempo de arco aberto é obrigatório.")
         @Positive(message = "O tempo de arco deve ser maior que zero.")
         Double tempoArcoMinutos,
 
         @NotNull(message = "A massa estimada é obrigatória.")
         @Positive(message = "A massa estimada deve ser maior que zero.")
-        Double massaEstimadaKg
+        Double massaEstimadaKg,
+
+        // --- FASE 3 (AC) --- Intenções
+        @NotNull(message = "A intenção de Projeto CAD é obrigatória.")
+        Boolean requerProjetoCAD,
+
+        @NotNull(message = "A intenção de Usinagem Final é obrigatória.")
+        Boolean requerUsinagemFinal,
+        
+        // Se requerUsinagemFinal = true, o Front deverá enviar este valor
+        Double tempoUsinagemMinutos
 ) {}

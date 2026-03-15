@@ -1,88 +1,61 @@
 package com.inovalayer.mada.core.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 /**
- * O Relações Públicas (Porta-voz) da nossa API.
- * Intercepta exceções lançadas em qualquer parte do código e traduz para respostas HTTP amigáveis.
+ * Controller Advice Global padronizado com RFC 7807 (Problem Details).
+ * Integrad com i18n via MessageSource.
  */
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    /**
-     * Intercepta a IllegalArgumentException.
-     * Nós utilizámos esta exceção no OrcamentoService quando uma regra de negócio é violada 
-     * (ex: Cliente não encontrado, Arame não encontrado).
-     * Mapeamos para HTTP 400 (Bad Request), pois o erro partiu de um dado inválido enviado pelo utilizador.
-     */
+    private final MessageSource messageSource;
+
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<StandardErrorDTO> handleIllegalArgumentException(
-            IllegalArgumentException ex, 
-            HttpServletRequest request) {
-
-        StandardErrorDTO error = new StandardErrorDTO(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                "Erro de Validação de Negócio",
-                ex.getMessage(), // Mensagem limpa: "Cliente não encontrado com o ID fornecido."
-                request.getRequestURI()
-        );
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    public ProblemDetail handleIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest request) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+        problemDetail.setTitle(messageSource.getMessage("Erro.ValidacaoPayload", null, "Erro de Validação", LocaleContextHolder.getLocale()));
+        problemDetail.setType(URI.create("https://inovalayer.com/errors/bad-request"));
+        problemDetail.setInstance(URI.create(request.getRequestURI()));
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        return problemDetail;
     }
 
-    /**
-     * Intercepta a MethodArgumentNotValidException.
-     * Esta exceção é lançada pelo Spring quando as validações do nosso DTO (como o @NotNull ou @Positive) falham.
-     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<StandardErrorDTO> handleValidationExceptions(
-            MethodArgumentNotValidException ex, 
-            HttpServletRequest request) {
-
-        // Extrai todas as mensagens de erro dos campos que falharam na validação e junta-as numa String
+    public ProblemDetail handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
         String errors = ex.getBindingResult().getFieldErrors().stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.joining("; "));
 
-        StandardErrorDTO error = new StandardErrorDTO(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                "Falha na Estrutura dos Dados (DTO)",
-                errors,
-                request.getRequestURI()
-        );
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, errors);
+        problemDetail.setTitle(messageSource.getMessage("Erro.ValidacaoPayload", null, "Falha na Estrutura dos Dados", LocaleContextHolder.getLocale()));
+        problemDetail.setType(URI.create("https://inovalayer.com/errors/validation"));
+        problemDetail.setInstance(URI.create(request.getRequestURI()));
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        return problemDetail;
     }
 
-    /**
-     * O "Cesto de Lixo" Global (Fallback).
-     * Se ocorrer um erro catastrófico que não previmos (ex: a base de dados cai), 
-     * cai aqui. Mapeamos para 500, mas sem expor o código fonte.
-     */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<StandardErrorDTO> handleGenericException(
-            Exception ex, 
-            HttpServletRequest request) {
-
-        StandardErrorDTO error = new StandardErrorDTO(
-                LocalDateTime.now(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Erro Interno do Servidor",
-                "Ocorreu um erro inesperado. Por favor, contacte o suporte da InovaLayer.", // Mensagem genérica e segura
-                request.getRequestURI()
-        );
-
-        // Opcional: Aqui poderíamos enviar o 'ex.getMessage()' para um sistema de logs (ex: Datadog)
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    public ProblemDetail handleGenericException(Exception ex, HttpServletRequest request) {
+        String detail = messageSource.getMessage("Erro.Servidor", null, "Ocorreu um erro interno", LocaleContextHolder.getLocale());
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, detail);
+        problemDetail.setTitle("Erro Interno do Servidor");
+        problemDetail.setType(URI.create("https://inovalayer.com/errors/internal-server-error"));
+        problemDetail.setInstance(URI.create(request.getRequestURI()));
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        return problemDetail;
     }
 }
