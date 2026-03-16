@@ -33,6 +33,6 @@ public class GasProtecao extends BaseEntity {
     private Boolean ativo = true;
 
     // Novo campo essencial para a conversão de consumo na Fase DC
-    @Column(name = "vazao_padrao", nullable = false, precision = 6, scale = 2)
+    @Column(name = "vazao_padrao", nullable = false)
     private Double vazaoPadrao; // Representado em L/min (Litros por minuto)
 }

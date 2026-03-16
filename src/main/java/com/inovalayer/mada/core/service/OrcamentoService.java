@@ -49,8 +49,8 @@ public class OrcamentoService {
         Orcamento orcamento = new Orcamento();
         preencherDadosFisicos(orcamento, request);
 
-        OrcamentoIC ic = calcularFaseIC(request, params);
-        OrcamentoDC dc = calcularFaseDC(request, arame, gas, params);
+        OrcamentoIC ic = calcularFaseIC(request, params, orcamento);
+        OrcamentoDC dc = calcularFaseDC(request, arame, gas, params, orcamento);
         List<OrcamentoAC> acList = calcularFaseAC(request, params, orcamento);
 
         // 3. Consolidação e Persistência
@@ -82,8 +82,9 @@ public class OrcamentoService {
         orcamento.setTratamentoTermico(request.tratamentoTermico());
     }
 
-    private OrcamentoIC calcularFaseIC(OrcamentoRequestDTO request, ParametroGlobal params) {
+    private OrcamentoIC calcularFaseIC(OrcamentoRequestDTO request, ParametroGlobal params, Orcamento orcamento) {
         OrcamentoIC ic = new OrcamentoIC();
+        ic.setOrcamento(orcamento);
         BigDecimal qtd = BigDecimal.valueOf(request.quantidade());
 
         // Snapshots
@@ -118,8 +119,9 @@ public class OrcamentoService {
         return ic;
     }
 
-    private OrcamentoDC calcularFaseDC(OrcamentoRequestDTO request, ArameMetalico arame, GasProtecao gas, ParametroGlobal params) {
+    private OrcamentoDC calcularFaseDC(OrcamentoRequestDTO request, ArameMetalico arame, GasProtecao gas, ParametroGlobal params, Orcamento orcamento) {
         OrcamentoDC dc = new OrcamentoDC();
+        dc.setOrcamento(orcamento);
         dc.setArameMetalico(arame);
         dc.setGasProtecao(gas);
         
@@ -145,7 +147,7 @@ public class OrcamentoService {
 
         // Energia e Máquina
         BigDecimal horas = BigDecimal.valueOf(request.tempoArcoMinutos()).divide(new BigDecimal("60"), 6, RoundingMode.HALF_UP);
-        dc.setCustoEnergia(horas.multiply(new BigDecimal("5.5")).multiply(dc.getTaxaEnergiaSnapshot()).setScale(2, RoundingMode.HALF_UP));
+        dc.setCustoEnergia(horas.multiply(params.getConsumoPotenciaKw()).multiply(dc.getTaxaEnergiaSnapshot()).setScale(2, RoundingMode.HALF_UP));
         dc.setCustoMaquina(horas.multiply(dc.getTaxaMaquinaSnapshot()).setScale(2, RoundingMode.HALF_UP));
 
         dc.setTempoArcoMinutos(request.tempoArcoMinutos());

@@ -46,6 +46,9 @@ public class ParametroGlobal extends BaseEntity {
     @Column(name = "fator_risco_k2", nullable = false, precision = 5, scale = 2)
     private BigDecimal fatorRiscoK2;
 
+    @Column(name = "consumo_potencia_kw", nullable = false, precision = 10, scale = 2)
+    private BigDecimal consumoPotenciaKw;
+
     @Column(name = "margem_lucro_percentual", nullable = false, precision = 5, scale = 2)
     private BigDecimal margemLucroPercentual;
 }

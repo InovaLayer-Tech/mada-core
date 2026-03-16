@@ -56,4 +56,7 @@ public class OrcamentoIC {
 
     @Column(name = "quantidade_lote_snapshot", nullable = false)
     private Integer quantidadeLoteSnapshot;
+
+    @OneToOne(mappedBy = "fase1IC")
+    private Orcamento orcamento;
 }

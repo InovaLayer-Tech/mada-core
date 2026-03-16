@@ -74,4 +74,7 @@ public class OrcamentoDC {
 
     @Column(name = "taxa_maquina_snapshot", nullable = false, precision = 10, scale = 2)
     private BigDecimal taxaMaquinaSnapshot;
+
+    @OneToOne(mappedBy = "fase2DC")
+    private Orcamento orcamento;
 }

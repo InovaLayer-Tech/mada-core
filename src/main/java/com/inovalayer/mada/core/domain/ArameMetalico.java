@@ -39,9 +39,9 @@ public class ArameMetalico extends BaseEntity {
     private Boolean ativo = true;
 
     // Novos campos essenciais para o cálculo de volume -> massa (Fase DC)
-    @Column(name = "densidade_gcm3", nullable = false, precision = 8, scale = 4)
+    @Column(name = "densidade_gcm3", nullable = false)
     private Double densidadeGcm3; // Representado em g/cm³
 
-    @Column(nullable = false, precision = 5, scale = 2)
+    @Column(nullable = false)
     private Double eficiencia; // Representado em % (ex: 97.5)
 }
