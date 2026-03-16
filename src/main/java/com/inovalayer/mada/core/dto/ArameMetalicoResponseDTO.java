@@ -15,6 +15,7 @@ public record ArameMetalicoResponseDTO(
         BigDecimal precoUnitarioBase,
         String ligaMetalica,
         Double diametroMm,
-        Double densidadeGcm3      // Padronizado com 'c' minúsculo
+        Double densidadeGcm3,     // Padronizado com 'c' minúsculo
+        Double eficiencia        // Novo campo para cálculo de massa real
 ) {
 }

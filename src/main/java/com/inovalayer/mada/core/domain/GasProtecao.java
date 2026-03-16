@@ -1,27 +1,38 @@
 package com.inovalayer.mada.core.domain;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-/**
- * Criei esta entidade para representar o segundo tipo de insumo físico (gás de proteção).
- * Assim como o arame, ela herda de Consumivel, aproveitando a estrutura comercial (nome, preço)
- * e estendendo com propriedades específicas de metrologia de fluidos.
- */
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "tb_gas_protecao")
-@PrimaryKeyJoinColumn(name = "id")
-@Getter
-@Setter
-public class GasProtecao extends Consumivel {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class GasProtecao extends BaseEntity {
 
-    // Defini o tipo de gás (ex: Argônio puro, Mistura Ar/CO2) para controle de processo de soldagem.
-    @Column(name = "tipo_gas", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
+    private String nome;
+
+    @Column(name = "fabricante", length = 100)
+    private String fabricante;
+
+    @Column(name = "codigo_produto", length = 50)
+    private String codigoProduto;
+
+    @Column(name = "tipo_gas", nullable = false, length = 50)
     private String tipoGas;
 
-    // Utilizei Double para a grandeza de vazão volumétrica (litros por minuto).
-    // Esta métrica é vital para que o motor de cálculo cruze com o "Tempo de Arco Aberto" e ache o custo final do gás.
-    @Column(name = "fluxo_litros_min", nullable = false)
-    private Double fluxoLitrosMin;
+    @Column(name = "preco_unitario_base", nullable = false, precision = 12, scale = 2)
+    private BigDecimal precoUnitarioBase;
+
+    @Column(nullable = false)
+    private Boolean ativo = true;
+
+    // Novo campo essencial para a conversão de consumo na Fase DC
+    @Column(name = "vazao_padrao", nullable = false, precision = 6, scale = 2)
+    private Double vazaoPadrao; // Representado em L/min (Litros por minuto)
 }

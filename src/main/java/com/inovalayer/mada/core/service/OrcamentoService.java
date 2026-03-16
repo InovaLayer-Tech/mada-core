@@ -40,7 +40,10 @@ public class OrcamentoService {
         
         // 1. Buscas de Dados SSOT (Fail-Fast)
         ArameMetalico arame = arameMetalicoRepository.findById(request.arameId())
-                .orElseThrow(() -> new IllegalArgumentException("O insumo selecionado não existe no catálogo."));
+                .orElseThrow(() -> new IllegalArgumentException("O arame selecionado não existe no catálogo."));
+
+        // TODO: Injetar GasProtecaoRepository para busca de dados SSOT
+        // GasProtecao gas = gasProtecaoRepository.findFirstByAtivoTrue() ...
 
         List<ParametroGlobal> parametros = parametroGlobalRepository.findAll();
         if (parametros.isEmpty()) {
@@ -71,7 +74,11 @@ public class OrcamentoService {
         ic.setCustoRemocao(custoRemo);
 
         BigDecimal totalIC = ic.getCustoSubstrato().add(custoPrep).add(custoRemo);
-        ic.setCustoTotalIC(totalIC);
+        
+        // Aplicação da Diluição de Lote (Regra Mandatória Fase 2)
+        BigDecimal quantidadeLote = BigDecimal.valueOf(request.quantidade());
+        BigDecimal totalICDiluido = totalIC.divide(quantidadeLote, 2, RoundingMode.HALF_UP);
+        ic.setCustoTotalIC(totalICDiluido);
 
         // -----------------------------------------------------------------------
         // FASE 2: Deposition Costs (DC)
@@ -81,16 +88,28 @@ public class OrcamentoService {
         dc.setTempoArcoMinutos(request.tempoArcoMinutos());
         dc.setMassaEstimadaKg(request.massaEstimadaKg());
         
-        // Snapshotting das regras voláteis
+        // Snapshotting das propriedades físicas e comerciais
         dc.setAramePrecoKgSnapshot(arame.getPrecoUnitarioBase());
-        dc.setGasPrecoLitroSnapshot(BigDecimal.ZERO); // Stub
+        dc.setArameDensidadeSnapshot(arame.getDensidadeGcm3());
+        dc.setArameEficienciaSnapshot(arame.getEficiencia());
+        dc.setGasPrecoM3Snapshot(new BigDecimal("45.00"));
+        dc.setGasVazaoSnapshot(15.0); // L/min default
         dc.setTaxaEnergiaSnapshot(params.getCustoKwh());
         dc.setTaxaMaquinaSnapshot(TAXA_HORA_MAQUINA); 
 
         // Cálculo Core (Cm + Cg + Ce + Cmq)
-        BigDecimal custoMaterial = arame.getPrecoUnitarioBase().multiply(massa).setScale(2, RoundingMode.HALF_UP);
+        // Cm = Massa * Preço * (1 / Eficiencia) -> Insumo consumido total
+        BigDecimal fatorEficiencia = BigDecimal.valueOf(100.0).divide(BigDecimal.valueOf(dc.getArameEficienciaSnapshot()), 6, RoundingMode.HALF_UP);
+        BigDecimal custoMaterial = dc.getAramePrecoKgSnapshot().multiply(massa).multiply(fatorEficiencia).setScale(2, RoundingMode.HALF_UP);
         dc.setCustoMaterial(custoMaterial);
-        dc.setCustoGas(BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP));
+        
+        // Cg = TempoArco * Vazao * PreçoGas
+        BigDecimal minutosGastoGas = tempoArco; // L/min * min = L -> / 1000 = m3
+        BigDecimal volumeGasM3 = minutosGastoGas.multiply(BigDecimal.valueOf(dc.getGasVazaoSnapshot()))
+                .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+        BigDecimal custoGas = volumeGasM3.multiply(dc.getGasPrecoM3Snapshot()).setScale(2, RoundingMode.HALF_UP);
+        dc.setCustoGas(custoGas);
+        
         dc.setCustoEnergia(BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)); // Stub Potência
         
         BigDecimal horasOperacao = tempoArco.divide(new BigDecimal("60"), 6, RoundingMode.HALF_UP);
@@ -138,7 +157,17 @@ public class OrcamentoService {
         // CONSOLIDAÇÃO (Aggregate Root)
         // -----------------------------------------------------------------------
         Orcamento orcamento = new Orcamento();
-        orcamento.setStatus(StatusOrcamento.PENDENTE); // Status imutável da web
+        orcamento.setStatus(StatusOrcamento.PENDENTE); 
+        
+        // --- Registro dos Campos Físicos no agregado ---
+        orcamento.setQuantidade(request.quantidade());
+        orcamento.setDimensaoX(request.dimensaoX());
+        orcamento.setDimensaoY(request.dimensaoY());
+        orcamento.setDimensaoZ(request.dimensaoZ());
+        orcamento.setTolerancia(request.tolerancia());
+        orcamento.setAcabamento(request.acabamento());
+        orcamento.setNivelInspecao(request.nivelInspecao());
+        orcamento.setTratamentoTermico(request.tratamentoTermico());
         
         orcamento.setFase1IC(ic);
         orcamento.setFase2DC(dc);
@@ -148,8 +177,8 @@ public class OrcamentoService {
         }
         orcamento.setFase3AC(listaAC);
 
-        // Equação Máster: CT = IC + DC + AC
-        BigDecimal custoTotalFinal = totalIC.add(totalDC).add(totalAC).setScale(2, RoundingMode.HALF_UP);
+        // Equação Máster: CT = IC (Diluído) + DC + AC
+        BigDecimal custoTotalFinal = ic.getCustoTotalIC().add(totalDC).add(totalAC).setScale(2, RoundingMode.HALF_UP);
         orcamento.setCustoTotalFinal(custoTotalFinal);
 
         // Salva a estrutura cascateada inteira num único commit ACID

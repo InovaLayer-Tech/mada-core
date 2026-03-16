@@ -54,12 +54,21 @@ public class OrcamentoDC {
     @Column(name = "custo_total_dc", nullable = false, precision = 12, scale = 2)
     private BigDecimal custoTotalDC;
 
-    // Snapshots relacionais de valores financeiros variáveis (Auditoria)
-    @Column(name = "arame_preco_kg_snapshot", nullable = false, precision = 10, scale = 2)
+    // Snapshots relacionais de propriedades físicas e financeiras (Auditoria)
+    @Column(name = "arame_preco_kg_snapshot", nullable = false, precision = 12, scale = 2)
     private BigDecimal aramePrecoKgSnapshot;
 
-    @Column(name = "gas_preco_litro_snapshot", nullable = false, precision = 10, scale = 2)
-    private BigDecimal gasPrecoLitroSnapshot;
+    @Column(name = "arame_densidade_snapshot", nullable = false)
+    private Double arameDensidadeSnapshot;
+
+    @Column(name = "arame_eficiencia_snapshot", nullable = false)
+    private Double arameEficienciaSnapshot;
+
+    @Column(name = "gas_preco_m3_snapshot", nullable = false, precision = 12, scale = 2)
+    private BigDecimal gasPrecoM3Snapshot;
+
+    @Column(name = "gas_vazao_snapshot", nullable = false)
+    private Double gasVazaoSnapshot;
 
     @Column(name = "taxa_energia_snapshot", nullable = false, precision = 10, scale = 4)
     private BigDecimal taxaEnergiaSnapshot;

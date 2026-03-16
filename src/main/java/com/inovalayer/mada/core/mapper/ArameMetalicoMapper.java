@@ -26,7 +26,8 @@ public class ArameMetalicoMapper {
                 entity.getPrecoUnitarioBase(),
                 entity.getLigaMetalica(),
                 entity.getDiametroMm(),
-                entity.getDensidadeGcm3()
+                entity.getDensidadeGcm3(),
+                entity.getEficiencia()
         );
     }
 }

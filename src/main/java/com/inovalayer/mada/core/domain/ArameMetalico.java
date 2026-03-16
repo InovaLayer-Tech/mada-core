@@ -1,29 +1,47 @@
 package com.inovalayer.mada.core.domain;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-/**
- * Criei esta entidade para representar o insumo físico na metrologia.
- * Ela herda da classe abstrata Consumivel, garantindo que o banco de dados
- * faça o JOIN automático entre os dados físicos (desta tabela) e os comerciais (da tabela pai).
- */
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "tb_arame_metalico")
-@PrimaryKeyJoinColumn(name = "id")
-@Getter
-@Setter
-public class ArameMetalico extends Consumivel {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class ArameMetalico extends BaseEntity {
 
-    // Especifiquei o tamanho da coluna no banco para otimizar o armazenamento.
-    @Column(name = "liga_metalica", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
+    private String nome;
+
+    @Column(name = "fabricante", length = 100)
+    private String fabricante;
+
+    @Column(name = "codigo_produto", length = 50)
+    private String codigoProduto;
+
+    @Column(name = "liga_metalica", length = 50)
     private String ligaMetalica;
 
-    // Utilizo Double para grandezas físicas contínuas, mantendo o rigor exigido nos cálculos de engenharia.
-    @Column(name = "diametro_mm", nullable = false)
+    @Column(name = "diametro_mm")
     private Double diametroMm;
 
-    @Column(name = "densidade_g_cm3", nullable = false)
-    private Double densidadeGcm3;
+    @Column(name = "tipo_material", length = 50)
+    private String tipoMaterial;
+
+    @Column(name = "preco_unitario_base", nullable = false, precision = 12, scale = 2)
+    private BigDecimal precoUnitarioBase;
+
+    @Column(nullable = false)
+    private Boolean ativo = true;
+
+    // Novos campos essenciais para o cálculo de volume -> massa (Fase DC)
+    @Column(name = "densidade_gcm3", nullable = false, precision = 8, scale = 4)
+    private Double densidadeGcm3; // Representado em g/cm³
+
+    @Column(nullable = false, precision = 5, scale = 2)
+    private Double eficiencia; // Representado em % (ex: 97.5)
 }

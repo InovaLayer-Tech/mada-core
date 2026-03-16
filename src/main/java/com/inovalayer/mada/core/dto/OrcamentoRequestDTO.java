@@ -6,13 +6,33 @@ import java.util.UUID;
 
 /**
  * Record DTO atuando como barreira de validação primária.
- * Recebe APENAS características FÍSICAS da peça e intenções de projeto.
- * Variáveis financeiras e taxas estão blindadas.
+ * Recebe características FÍSICAS da peça, intenções de projeto e dados de lote.
  */
 public record OrcamentoRequestDTO(
         
         @NotNull(message = "{Validacao.Arame.NotNull}")
         UUID arameId,
+
+        // --- CAMPOS FÍSICOS & LOTE ---
+        @NotNull(message = "{Validacao.Quantidade.NotNull}")
+        @Positive(message = "{Validacao.Quantidade.Positive}")
+        Integer quantidade,
+
+        @NotNull(message = "{Validacao.DimensaoX.NotNull}")
+        Double dimensaoX,
+
+        @NotNull(message = "{Validacao.DimensaoY.NotNull}")
+        Double dimensaoY,
+
+        @NotNull(message = "{Validacao.DimensaoZ.NotNull}")
+        Double dimensaoZ,
+
+        String tolerancia,
+        String acabamento,
+        String nivelInspecao,
+        
+        @NotNull(message = "{Validacao.TratamentoTermico.NotNull}")
+        Boolean tratamentoTermico,
 
         // --- FASE 1 (IC) ---
         @NotNull(message = "{Validacao.TempoPreparacao.NotNull}")
@@ -39,6 +59,5 @@ public record OrcamentoRequestDTO(
         @NotNull(message = "{Validacao.UsinagemFinal.NotNull}")
         Boolean requerUsinagemFinal,
         
-        // Se requerUsinagemFinal = true, o Front deverá enviar este valor
         Double tempoUsinagemMinutos
 ) {}

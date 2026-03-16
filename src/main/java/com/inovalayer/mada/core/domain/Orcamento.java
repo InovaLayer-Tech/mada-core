@@ -32,6 +32,31 @@ public class Orcamento {
     @Column(name = "status", nullable = false, length = 30)
     private StatusOrcamento status;
 
+    // --- Novos Campos Físicos (Portal do Cliente) ---
+    @Column(nullable = false)
+    private Integer quantidade; // Tamanho do lote para diluição de IC
+
+    @Column(name = "dimensao_x", nullable = false)
+    private Double dimensaoX;
+
+    @Column(name = "dimensao_y", nullable = false)
+    private Double dimensaoY;
+
+    @Column(name = "dimensao_z", nullable = false)
+    private Double dimensaoZ;
+
+    @Column(length = 50)
+    private String tolerancia;
+
+    @Column(length = 100)
+    private String acabamento;
+
+    @Column(name = "nivel_inspecao", length = 100)
+    private String nivelInspecao;
+
+    @Column(name = "tratamento_termico", nullable = false)
+    private Boolean tratamentoTermico = false;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "orcamento_ic_id")
     private OrcamentoIC fase1IC;
