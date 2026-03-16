@@ -26,7 +26,7 @@ public class OrcamentoController {
     // A anotação @Valid é o gatilho que liga a barreira de segurança que criamos no DTO.
     @PostMapping
     public ResponseEntity<OrcamentoResponseDTO> processarOrcamento(@RequestBody @Valid OrcamentoRequestDTO request) {
-        OrcamentoResponseDTO orcamentoGerado = orcamentoService.processarMetrologia(request);
+        OrcamentoResponseDTO orcamentoGerado = orcamentoService.criarOrcamento(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoGerado);
     }
 

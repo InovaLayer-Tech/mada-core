@@ -27,6 +27,18 @@ public class ParametroGlobal extends BaseEntity {
     @Column(name = "taxa_mao_de_obra_hora", nullable = false, precision = 10, scale = 2)
     private BigDecimal taxaMaoDeObraHora;
 
+    @Column(name = "taxa_engenheiro_hora", nullable = false, precision = 10, scale = 2)
+    private BigDecimal taxaEngenheiroHora;
+
+    @Column(name = "taxa_usinagem_hora", nullable = false, precision = 10, scale = 2)
+    private BigDecimal taxaUsinagemHora;
+
+    @Column(name = "taxa_depreciacao_maquina_hora", nullable = false, precision = 10, scale = 2)
+    private BigDecimal taxaDepreciacaoMaquinaHora;
+
+    @Column(name = "custo_tratamento_termico_fixo", nullable = false, precision = 10, scale = 2)
+    private BigDecimal custoTratamentoTermicoFixo;
+
     // Fatores K1 e K2 de risco/complexidade da metodologia WAAM
     @Column(name = "fator_risco_k1", nullable = false, precision = 5, scale = 2)
     private BigDecimal fatorRiscoK1;

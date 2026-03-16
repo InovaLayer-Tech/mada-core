@@ -28,10 +28,9 @@ public class OrcamentoDC {
     @JoinColumn(name = "arame_metalico_id", nullable = false)
     private ArameMetalico arameMetalico;
 
-    // Caso o modelo passe a contemplar o Gás explicitamente:
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "gas_protecao_id")
-    // private GasProtecao gasProtecao;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "gas_protecao_id")
+    private GasProtecao gasProtecao;
 
     @Column(name = "tempo_arco_minutos", nullable = false)
     private Double tempoArcoMinutos;

@@ -35,6 +35,12 @@ public class OrcamentoIC {
     @Column(name = "custo_preparacao", nullable = false, precision = 12, scale = 2)
     private BigDecimal custoPreparacao;
 
+    @Column(name = "custo_setup_processo", nullable = false, precision = 12, scale = 2)
+    private BigDecimal custoSetupProcesso;
+
+    @Column(name = "custo_engenharia", nullable = false, precision = 12, scale = 2)
+    private BigDecimal custoEngenharia;
+
     @Column(name = "custo_remocao", nullable = false, precision = 12, scale = 2)
     private BigDecimal custoRemocao;
 
@@ -44,4 +50,10 @@ public class OrcamentoIC {
     // Snapshot relacional da taxa de mão de obra (garantia de auditoria)
     @Column(name = "taxa_mao_de_obra_snapshot", nullable = false, precision = 10, scale = 2)
     private BigDecimal taxaMaoDeObraSnapshot;
+
+    @Column(name = "taxa_engenheiro_snapshot", nullable = false, precision = 10, scale = 2)
+    private BigDecimal taxaEngenheiroSnapshot;
+
+    @Column(name = "quantidade_lote_snapshot", nullable = false)
+    private Integer quantidadeLoteSnapshot;
 }
