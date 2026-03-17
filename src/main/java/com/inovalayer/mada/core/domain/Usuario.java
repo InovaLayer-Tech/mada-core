@@ -35,13 +35,7 @@ public class Usuario extends BaseEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UsuarioRole.ADMIN) {
-            return List.of(
-                new SimpleGrantedAuthority("ROLE_ADMIN"), 
-                new SimpleGrantedAuthority("ROLE_CLIENTE")
-            );
-        }
-        return List.of(new SimpleGrantedAuthority("ROLE_CLIENTE"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
     }
 
     @Override

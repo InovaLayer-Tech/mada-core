@@ -192,4 +192,12 @@ public class OrcamentoService {
                 .orElseThrow(() -> new EntityNotFoundException("Orçamento não encontrado."));
         return orcamentoMapper.toDto(orcamento);
     }
+
+    @Transactional(readOnly = true)
+    public List<OrcamentoResponseDTO> listarTodos() {
+        return orcamentoRepository.findAll()
+                .stream()
+                .map(orcamentoMapper::toDto)
+                .toList();
+    }
 }

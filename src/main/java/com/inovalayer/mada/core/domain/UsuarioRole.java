@@ -1,7 +1,7 @@
 package com.inovalayer.mada.core.domain;
 
 /**
- * Papéis de acesso do sistema InovaLayer 3D.
+ * Papéis de acesso do sistema InovaLayer3D.
  */
 public enum UsuarioRole {
     ADMIN("admin"),
