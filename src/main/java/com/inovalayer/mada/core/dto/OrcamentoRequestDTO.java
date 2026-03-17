@@ -5,59 +5,34 @@ import jakarta.validation.constraints.Positive;
 import java.util.UUID;
 
 /**
- * Record DTO atuando como barreira de validação primária.
- * Recebe características FÍSICAS da peça, intenções de projeto e dados de lote.
+ * DTO para solicitação inicial do Cliente (B2C).
+ * Focado no envelope físico e requisitos de aplicação.
  */
 public record OrcamentoRequestDTO(
         
-        @NotNull(message = "{Validacao.Arame.NotNull}")
-        UUID arameId,
+        @NotNull(message = "O nome do projeto é obrigatório.")
+        String nomeProjeto,
 
-        // --- CAMPOS FÍSICOS & LOTE ---
-        @NotNull(message = "{Validacao.Quantidade.NotNull}")
-        @Positive(message = "{Validacao.Quantidade.Positive}")
+        @NotNull(message = "A quantidade é obrigatória.")
+        @Positive(message = "A quantidade deve ser positiva.")
         Integer quantidade,
 
-        @NotNull(message = "{Validacao.DimensaoX.NotNull}")
+        @NotNull(message = "Dimensão X é obrigatória.")
         Double dimensaoX,
 
-        @NotNull(message = "{Validacao.DimensaoY.NotNull}")
+        @NotNull(message = "Dimensão Y é obrigatória.")
         Double dimensaoY,
 
-        @NotNull(message = "{Validacao.DimensaoZ.NotNull}")
+        @NotNull(message = "Dimensão Z é obrigatória.")
         Double dimensaoZ,
 
         String tolerancia,
         String acabamento,
         String nivelInspecao,
         
-        @NotNull(message = "{Validacao.TratamentoTermico.NotNull}")
+        @NotNull(message = "Informe se necessita tratamento térmico.")
         Boolean tratamentoTermico,
 
-        // --- FASE 1 (IC) ---
-        @NotNull(message = "{Validacao.TempoPreparacao.NotNull}")
-        @Positive(message = "{Validacao.TempoPreparacao.Positive}")
-        Double tempoPreparacaoMinutos,
-
-        @NotNull(message = "{Validacao.TempoRemocao.NotNull}")
-        @Positive(message = "{Validacao.TempoRemocao.Positive}")
-        Double tempoRemocaoMinutos,
-
-        // --- FASE 2 (DC) ---
-        @NotNull(message = "{Validacao.TempoArco.NotNull}")
-        @Positive(message = "{Validacao.TempoArco.Positive}")
-        Double tempoArcoMinutos,
-
-        @NotNull(message = "{Validacao.MassaEstimada.NotNull}")
-        @Positive(message = "{Validacao.MassaEstimada.Positive}")
-        Double massaEstimadaKg,
-
-        // --- FASE 3 (AC) --- Intenções
-        @NotNull(message = "{Validacao.ProjetoCAD.NotNull}")
-        Boolean requerProjetoCAD,
-
-        @NotNull(message = "{Validacao.UsinagemFinal.NotNull}")
-        Boolean requerUsinagemFinal,
-        
-        Double tempoUsinagemMinutos
+        String finalidadePeca,
+        UUID materialDesejadoId // Sugestão do cliente
 ) {}

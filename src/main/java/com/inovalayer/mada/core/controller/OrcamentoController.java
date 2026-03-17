@@ -1,5 +1,6 @@
 package com.inovalayer.mada.core.controller;
 
+import com.inovalayer.mada.core.dto.OrcamentoCalculoRequestDTO;
 import com.inovalayer.mada.core.dto.OrcamentoRequestDTO;
 import com.inovalayer.mada.core.dto.OrcamentoResponseDTO;
 import com.inovalayer.mada.core.service.OrcamentoService;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * REST Controller para expor os serviços de orçamentos.
+ * REST Controller para expor os serviços de orçamentos WAAM.
  */
 @RestController
 @RequestMapping("/api/v1/orcamentos")
@@ -22,10 +23,24 @@ public class OrcamentoController {
 
     private final OrcamentoService orcamentoService;
 
+    /**
+     * Registro inicial da intenção de orçamento pelo Cliente.
+     */
     @PostMapping
-    public ResponseEntity<OrcamentoResponseDTO> processarOrcamento(@RequestBody @Valid OrcamentoRequestDTO request) {
-        OrcamentoResponseDTO orcamentoGerado = orcamentoService.criarOrcamento(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoGerado);
+    public ResponseEntity<OrcamentoResponseDTO> solicitarOrcamento(@RequestBody @Valid OrcamentoRequestDTO request) {
+        OrcamentoResponseDTO orcamento = orcamentoService.solicitarOrcamento(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(orcamento);
+    }
+
+    /**
+     * Processamento metrológico e cálculo financeiro pela Engenharia (B2B).
+     */
+    @PutMapping("/{id}/calcular")
+    public ResponseEntity<OrcamentoResponseDTO> processarCalculo(
+            @PathVariable UUID id, 
+            @RequestBody @Valid OrcamentoCalculoRequestDTO request) {
+        OrcamentoResponseDTO orcamentoCalculado = orcamentoService.processarCalculo(id, request);
+        return ResponseEntity.ok(orcamentoCalculado);
     }
 
     @GetMapping("/{id}")

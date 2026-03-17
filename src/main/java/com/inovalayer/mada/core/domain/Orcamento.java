@@ -45,6 +45,13 @@ public class Orcamento {
     @Column(name = "dimensao_z", nullable = false)
     private Double dimensaoZ;
 
+    @Column(name = "nome_projeto", nullable = false, length = 100)
+    private String nomeProjeto;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
     @Column(length = 50)
     private String tolerancia;
 
@@ -70,6 +77,9 @@ public class Orcamento {
 
     @Column(name = "custo_total_final", nullable = false, precision = 12, scale = 2)
     private BigDecimal custoTotalFinal;
+
+    @Column(name = "preco_final_sugerido", nullable = false, precision = 12, scale = 2)
+    private BigDecimal precoFinalSugerido;
 
     // Registo imutável do momento exato da emissão do documento para efeitos de auditoria.
     @CreationTimestamp

@@ -25,6 +25,15 @@ public class Cliente extends BaseEntity {
 
     @Column(name = "email_contato", length = 100)
     private String emailContato;
+
+    @Column(name = "setor_atuacao", length = 100)
+    private String setorAtuacao;
+
+    @Column(name = "ativo", nullable = false)
+    private Boolean ativo = true;
+
+    @Column(name = "vip", nullable = false)
+    private Boolean vip = false;
     
     // O relacionamento com Orcamento (OneToMany) será feito na entidade Orcamento (ManyToOne) 
     // para mantermos a chave estrangeira do lado correto e evitarmos tabelas associativas desnecessárias.
