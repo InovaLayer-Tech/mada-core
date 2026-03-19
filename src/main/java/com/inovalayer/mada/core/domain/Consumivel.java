@@ -14,7 +14,7 @@ import java.util.UUID;
  * garantindo o princípio DRY (Don't Repeat Yourself) para qualquer novo insumo que eu criar no futuro.
  */
 @Entity
-@Table(name = "tb_consumivel")
+@Table(name = "consumivel")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
@@ -25,7 +25,8 @@ public abstract class Consumivel extends BaseEntity {
     private String nome;
 
     @Column(nullable = false, length = 100)
-    private String fabricante;
+    private String fornecedor;
+
 
     // Apliquei a restrição unique=true para blindar o banco contra a duplicidade de SKUs/Códigos de produto.
     @Column(name = "codigo_produto", nullable = false, unique = true, length = 50)
@@ -35,4 +36,7 @@ public abstract class Consumivel extends BaseEntity {
     // Isso é mandatório para que o cálculo financeiro do Spring Boot não divirja do motor metrológico em Python.
     @Column(name = "preco_unitario_base", nullable = false, precision = 12, scale = 6)
     private BigDecimal precoUnitarioBase;
+
+    @Column(nullable = false)
+    private Boolean ativo = true;
 }

@@ -48,6 +48,18 @@ public class Orcamento {
     @Column(name = "nome_projeto", nullable = false, length = 100)
     private String nomeProjeto;
 
+    @Column(name = "nome_empresa", length = 100)
+    private String nomeEmpresa;
+
+    @Column(name = "finalidade_peca", length = 100)
+    private String finalidadePeca;
+
+    @Column(name = "material_desejado_id")
+    private UUID materialDesejadoId;
+
+    @Column(name = "arquivo_url", length = 255)
+    private String arquivoUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
@@ -62,7 +74,7 @@ public class Orcamento {
     private String nivelInspecao;
 
     @Column(name = "tratamento_termico", nullable = false)
-    private Boolean tratamentoTermico = false;
+    private Boolean tratamentoTermico = true;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "orcamento_ic_id")
@@ -75,11 +87,14 @@ public class Orcamento {
     @OneToMany(mappedBy = "orcamento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrcamentoAC> fase3AC = new ArrayList<>();
 
-    @Column(name = "custo_total_final", nullable = false, precision = 12, scale = 2)
-    private BigDecimal custoTotalFinal;
+    @Column(name = "custo_total_final", precision = 12, scale = 2)
+    private BigDecimal custoTotalFinal = BigDecimal.ZERO;
 
-    @Column(name = "preco_final_sugerido", nullable = false, precision = 12, scale = 2)
-    private BigDecimal precoFinalSugerido;
+    @Column(name = "preco_final_sugerido", precision = 12, scale = 2)
+    private BigDecimal precoFinalSugerido = BigDecimal.ZERO;
+
+    @Column(name = "margem_aplicada", precision = 5, scale = 2)
+    private BigDecimal margemComercialAplicada = BigDecimal.ZERO;
 
     // Registo imutável do momento exato da emissão do documento para efeitos de auditoria.
     @CreationTimestamp

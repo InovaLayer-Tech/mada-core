@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_parametro_global")
+@Table(name = "parametro_global")
 public class ParametroGlobal extends BaseEntity {
 
     // Utilizo BigDecimal para todos os valores financeiros e de precisão, conforme decisão arquitetural.
@@ -51,4 +51,7 @@ public class ParametroGlobal extends BaseEntity {
 
     @Column(name = "margem_lucro_percentual", nullable = false, precision = 5, scale = 2)
     private BigDecimal margemLucroPercentual;
+
+    @Column(name = "taxa_impostos", nullable = false, precision = 5, scale = 2)
+    private BigDecimal taxaImpostos = BigDecimal.ZERO;
 }

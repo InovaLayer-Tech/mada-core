@@ -21,13 +21,14 @@ public class ArameMetalicoMapper {
         return new ArameMetalicoResponseDTO(
                 entity.getId(),
                 entity.getNome(),
-                entity.getFabricante(),
+                entity.getFornecedor(),
                 entity.getCodigoProduto(),
                 entity.getPrecoUnitarioBase(),
                 entity.getLigaMetalica(),
                 entity.getDiametroMm(),
                 entity.getDensidadeGcm3(),
-                entity.getEficiencia()
+                entity.getEficiencia(),
+                entity.getAtivo()
         );
     }
 }

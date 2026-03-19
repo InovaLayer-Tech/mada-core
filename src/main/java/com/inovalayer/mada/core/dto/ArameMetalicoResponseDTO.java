@@ -10,12 +10,13 @@ import java.util.UUID;
 public record ArameMetalicoResponseDTO(
         UUID id,
         String nome,              // Adicionado para corrigir a quebra de interface
-        String fabricante,        // Renomeado de nomeFabricante para padronização
+        String fornecedor,        // Sincronizado com Consumivel
         String codigoProduto,
         BigDecimal precoUnitarioBase,
         String ligaMetalica,
         Double diametroMm,
         Double densidadeGcm3,     // Padronizado com 'c' minúsculo
-        Double eficiencia        // Novo campo para cálculo de massa real
+        Double eficiencia,        // Novo campo para cálculo de massa real
+        Boolean ativo
 ) {
 }

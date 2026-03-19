@@ -14,16 +14,35 @@ public record OrcamentoResponseDTO(
         String status,
         LocalDateTime dataEmissao,
         
+        // Identificação (B2C)
+        String nomeProjeto,
+        String nomeEmpresa,
+        String finalidadePeca,
+        String arquivoUrl,
+        UUID materialDesejadoId,
+        Integer quantidade,
+        
+        // Envelope Físico (B2C)
+        Double dimensaoX,
+        Double dimensaoY,
+        Double dimensaoZ,
+        String tolerancia,
+        String acabamento,
+        String nivelInspecao,
+        Boolean tratamentoTermico,
+        
         // FASE 1: IC
         Double tempoPreparacaoMinutos,
         Double tempoRemocaoMinutos,
         BigDecimal custoSubstratoIC,
         BigDecimal custoPreparacaoIC,
         BigDecimal custoRemocaoIC,
+        BigDecimal custoEngenhariaIC,
         BigDecimal custoTotalIC,
 
         // FASE 2: DC
         Double tempoArcoMinutos,
+        Double tempoMortoMinutos,
         Double massaEstimadaKg,
         String nomeArameMetalico,
         BigDecimal custoMaterialDC,

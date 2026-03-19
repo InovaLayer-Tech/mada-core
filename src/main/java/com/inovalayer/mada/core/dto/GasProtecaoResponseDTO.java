@@ -11,7 +11,7 @@ import java.util.UUID;
 public record GasProtecaoResponseDTO(
         UUID id,
         String nome,
-        String fabricante,
+        String fornecedor,
         String codigoProduto,
         String tipoGas,
         BigDecimal precoUnitarioBase,

@@ -13,6 +13,9 @@ public record OrcamentoRequestDTO(
         @NotNull(message = "O nome do projeto é obrigatório.")
         String nomeProjeto,
 
+        @NotNull(message = "O nome da empresa é obrigatório.")
+        String nomeEmpresa,
+
         @NotNull(message = "A quantidade é obrigatória.")
         @Positive(message = "A quantidade deve ser positiva.")
         Integer quantidade,
@@ -34,5 +37,6 @@ public record OrcamentoRequestDTO(
         Boolean tratamentoTermico,
 
         String finalidadePeca,
-        UUID materialDesejadoId // Sugestão do cliente
+        UUID materialDesejadoId, // Sugestão do cliente
+        String arquivoUrl
 ) {}

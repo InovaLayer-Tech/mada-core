@@ -18,7 +18,7 @@ public class GasProtecaoMapper {
         return new GasProtecaoResponseDTO(
                 entity.getId(),
                 entity.getNome(),
-                entity.getFabricante(),
+                entity.getFornecedor(),
                 entity.getCodigoProduto(),
                 entity.getTipoGas(),
                 entity.getPrecoUnitarioBase(),

@@ -29,6 +29,10 @@ public record OrcamentoCalculoRequestDTO(
         @Positive(message = "O tempo de remoção deve ser positivo.")
         Double tempoRemocaoMinutos,
 
+        @NotNull(message = "O tempo morto é obrigatório.")
+        @Positive(message = "O tempo morto deve ser positivo.")
+        Double tempoMortoMinutos,
+
         Boolean requerProjetoCAD,
         Boolean requerUsinagemFinal,
         Double tempoUsinagemMinutos

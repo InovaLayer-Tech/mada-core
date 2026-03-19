@@ -45,21 +45,43 @@ public class OrcamentoAuditMapper {
                 entity.getStatus().name(),
                 entity.getDataEmissao(),
                 
-                entity.getFase1IC().getTempoPreparacaoMinutos(),
-                entity.getFase1IC().getTempoRemocaoMinutos(),
-                entity.getFase1IC().getCustoSubstrato(),
-                entity.getFase1IC().getCustoPreparacao(),
-                entity.getFase1IC().getCustoRemocao(),
-                entity.getFase1IC().getCustoTotalIC(),
+                // Dados B2C
+                entity.getNomeProjeto(),
+                entity.getNomeEmpresa(),
+                entity.getFinalidadePeca(),
+                entity.getArquivoUrl(),
+                entity.getMaterialDesejadoId(),
+                entity.getQuantidade(),
                 
-                entity.getFase2DC().getTempoArcoMinutos(),
-                entity.getFase2DC().getMassaEstimadaKg(),
-                entity.getFase2DC().getArameMetalico().getLigaMetalica() + " " + entity.getFase2DC().getArameMetalico().getCodigoProduto(),
-                entity.getFase2DC().getCustoMaterial(),
-                entity.getFase2DC().getCustoGas(),
-                entity.getFase2DC().getCustoEnergia(),
-                entity.getFase2DC().getCustoMaquina(),
-                entity.getFase2DC().getCustoTotalDC(),
+                entity.getDimensaoX(),
+                entity.getDimensaoY(),
+                entity.getDimensaoZ(),
+                entity.getTolerancia(),
+                entity.getAcabamento(),
+                entity.getNivelInspecao(),
+                entity.getTratamentoTermico(),
+                
+                // FASE 1: IC
+                entity.getFase1IC() != null ? entity.getFase1IC().getTempoPreparacaoMinutos() : 0.0,
+                entity.getFase1IC() != null ? entity.getFase1IC().getTempoRemocaoMinutos() : 0.0,
+                entity.getFase1IC() != null ? entity.getFase1IC().getCustoSubstrato() : BigDecimal.ZERO,
+                entity.getFase1IC() != null ? entity.getFase1IC().getCustoPreparacao() : BigDecimal.ZERO,
+                entity.getFase1IC() != null ? entity.getFase1IC().getCustoRemocao() : BigDecimal.ZERO,
+                entity.getFase1IC() != null ? entity.getFase1IC().getCustoEngenharia() : BigDecimal.ZERO,
+                entity.getFase1IC() != null ? entity.getFase1IC().getCustoTotalIC() : BigDecimal.ZERO,
+                
+                // FASE 2: DC
+                entity.getFase2DC() != null ? entity.getFase2DC().getTempoArcoMinutos() : 0.0,
+                entity.getFase2DC() != null ? entity.getFase2DC().getTempoMortoMinutos() : 0.0,
+                entity.getFase2DC() != null ? entity.getFase2DC().getMassaEstimadaKg() : 0.0,
+                (entity.getFase2DC() != null && entity.getFase2DC().getArameMetalico() != null) 
+                        ? (entity.getFase2DC().getArameMetalico().getLigaMetalica() + " " + entity.getFase2DC().getArameMetalico().getCodigoProduto()) 
+                        : "N/A",
+                entity.getFase2DC() != null ? entity.getFase2DC().getCustoMaterial() : BigDecimal.ZERO,
+                entity.getFase2DC() != null ? entity.getFase2DC().getCustoGas() : BigDecimal.ZERO,
+                entity.getFase2DC() != null ? entity.getFase2DC().getCustoEnergia() : BigDecimal.ZERO,
+                entity.getFase2DC() != null ? entity.getFase2DC().getCustoMaquina() : BigDecimal.ZERO,
+                entity.getFase2DC() != null ? entity.getFase2DC().getCustoTotalDC() : BigDecimal.ZERO,
                 
                 servicosDto,
                 totalAC,

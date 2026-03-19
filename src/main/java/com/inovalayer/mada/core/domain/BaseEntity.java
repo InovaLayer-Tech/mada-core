@@ -30,10 +30,10 @@ public abstract class BaseEntity {
     private UUID id;
 
     @CreationTimestamp
-    @Column(name = "criado_em", nullable = false, updatable = false)
+    @Column(name = "data_criacao", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
 
     @UpdateTimestamp
-    @Column(name = "atualizado_em")
+    @Column(name = "data_atualizacao")
     private LocalDateTime atualizadoEm;
 }

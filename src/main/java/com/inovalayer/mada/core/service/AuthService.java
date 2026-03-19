@@ -113,9 +113,14 @@ public class AuthService {
         
         usuarioRepository.save(usuario);
 
+        String jwtToken = jwtService.gerarToken(usuario);
+
         return AuthResponseDTO.builder()
+                .token(jwtToken)
                 .email(usuario.getEmail())
+                .nomeCompleto(usuario.getNomeCompleto())
                 .role(usuario.getRole().name())
+                .expiresAt(jwtService.getExpirationTime())
                 .build();
     }
 

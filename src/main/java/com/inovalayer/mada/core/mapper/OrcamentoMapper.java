@@ -5,8 +5,6 @@ import com.inovalayer.mada.core.domain.OrcamentoAC;
 import com.inovalayer.mada.core.dto.OrcamentoResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,11 +14,14 @@ public interface OrcamentoMapper {
     @Mapping(target = "custoSubstratoIC", source = "fase1IC.custoSubstrato")
     @Mapping(target = "custoPreparacaoIC", source = "fase1IC.custoPreparacao")
     @Mapping(target = "custoRemocaoIC", source = "fase1IC.custoRemocao")
+    @Mapping(target = "custoEngenhariaIC", source = "fase1IC.custoEngenharia")
     @Mapping(target = "custoTotalIC", source = "fase1IC.custoTotalIC")
     @Mapping(target = "tempoPreparacaoMinutos", source = "fase1IC.tempoPreparacaoMinutos")
     @Mapping(target = "tempoRemocaoMinutos", source = "fase1IC.tempoRemocaoMinutos")
+    @Mapping(target = "nomeEmpresa", source = "nomeEmpresa")
     
     @Mapping(target = "tempoArcoMinutos", source = "fase2DC.tempoArcoMinutos")
+    @Mapping(target = "tempoMortoMinutos", source = "fase2DC.tempoMortoMinutos")
     @Mapping(target = "massaEstimadaKg", source = "fase2DC.massaEstimadaKg")
     @Mapping(target = "nomeArameMetalico", source = "fase2DC.arameMetalico.nome")
     @Mapping(target = "custoMaterialDC", source = "fase2DC.custoMaterial")
@@ -33,10 +34,10 @@ public interface OrcamentoMapper {
     @Mapping(target = "custoTotalAC", expression = "java(calcularTotalAC(orcamento.getFase3AC()))")
     
     @Mapping(target = "custoDiretoFabricacao", source = "custoTotalFinal")
-    @Mapping(target = "margemComercialAplicada", constant = "0.0") // TODO: Implementar margem real
+    @Mapping(target = "margemComercialAplicada", constant = "0.0") // TODO: Integrar com ParametroGlobal
     @Mapping(target = "impostosFaturamentoEstimados", constant = "0.0")
-    @Mapping(target = "precoFinalSugerido", source = "custoTotalFinal")
-    @Mapping(target = "dataEmissao", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "precoFinalSugerido", source = "precoFinalSugerido")
+    @Mapping(target = "dataEmissao", source = "dataEmissao")
     OrcamentoResponseDTO toDto(Orcamento orcamento);
 
     default List<OrcamentoResponseDTO.ServicoAdicionalDTO> mapServicos(List<OrcamentoAC> servicos) {

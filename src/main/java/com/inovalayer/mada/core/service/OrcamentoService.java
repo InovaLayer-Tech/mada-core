@@ -8,6 +8,7 @@ import com.inovalayer.mada.core.mapper.OrcamentoMapper;
 import com.inovalayer.mada.core.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.util.UUID;
  * Service orquestrador das regras de negócio metrológico-financeiras (Metodologia WAAM).
  * Refatorado para suportar o fluxo segregado: Solicitação (B2C) -> Cálculo (B2B).
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrcamentoService {
@@ -36,18 +38,25 @@ public class OrcamentoService {
      */
     @Transactional
     public OrcamentoResponseDTO solicitarOrcamento(OrcamentoRequestDTO request) {
+        log.info("REGISTRANDO NOVA SOLICITAÇÃO DE ORÇAMENTO (RFQ): {}", request.nomeProjeto());
         Orcamento orcamento = new Orcamento();
         orcamento.setNomeProjeto(request.nomeProjeto());
+        orcamento.setNomeEmpresa(request.nomeEmpresa());
         orcamento.setQuantidade(request.quantidade());
         orcamento.setDimensaoX(request.dimensaoX());
         orcamento.setDimensaoY(request.dimensaoY());
         orcamento.setDimensaoZ(request.dimensaoZ());
         orcamento.setTolerancia(request.tolerancia());
         orcamento.setAcabamento(request.acabamento());
+        orcamento.setNivelInspecao(request.nivelInspecao());
         orcamento.setTratamentoTermico(request.tratamentoTermico());
+        orcamento.setFinalidadePeca(request.finalidadePeca());
+        orcamento.setMaterialDesejadoId(request.materialDesejadoId());
+        orcamento.setArquivoUrl(request.arquivoUrl());
         orcamento.setStatus(StatusOrcamento.PENDENTE);
 
         Orcamento saved = orcamentoRepository.save(orcamento);
+        log.info("ORÇAMENTO REGISTRADO COM SUCESSO. ID: {}, STATUS: {}", saved.getId(), saved.getStatus());
         return orcamentoMapper.toDto(saved);
     }
 
@@ -56,10 +65,12 @@ public class OrcamentoService {
      */
     @Transactional
     public OrcamentoResponseDTO processarCalculo(UUID id, OrcamentoCalculoRequestDTO request) {
+        log.info("PROCESSANDO CÁLCULO MADA-CORE PARA ORÇAMENTO ID: {}", id);
         Orcamento orcamento = orcamentoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Orçamento não encontrado."));
 
         if (orcamento.getStatus() != StatusOrcamento.PENDENTE && orcamento.getStatus() != StatusOrcamento.CALCULADO) {
+            log.warn("TENTATIVA DE CÁLCULO EM ORÇAMENTO COM STATUS INVÁLIDO: {}", orcamento.getStatus());
             throw new IllegalStateException("Apenas orçamentos pendentes podem ser calculados.");
         }
 
@@ -97,10 +108,14 @@ public class OrcamentoService {
         orcamento.setCustoTotalFinal(custoTotalFases.setScale(2, RoundingMode.HALF_UP));
 
         // Cálculo do Preço Sugerido (Custo + Margem)
-        BigDecimal margem = params.getMargemLucroPercentual().divide(new BigDecimal("100"), 6, RoundingMode.HALF_UP).add(BigDecimal.ONE);
-        orcamento.setPrecoFinalSugerido(custoTotalFases.multiply(margem).setScale(2, RoundingMode.HALF_UP));
+        BigDecimal margemPercentual = params.getMargemLucroPercentual();
+        BigDecimal margemFator = margemPercentual.divide(new BigDecimal("100"), 6, RoundingMode.HALF_UP).add(BigDecimal.ONE);
+        
+        orcamento.setMargemComercialAplicada(margemPercentual);
+        orcamento.setPrecoFinalSugerido(custoTotalFases.multiply(margemFator).setScale(2, RoundingMode.HALF_UP));
 
         Orcamento saved = orcamentoRepository.save(orcamento);
+        log.info("CÁLCULO CONCLUÍDO PARA PROJETO: {}. CUSTO FINAL: R$ {}", saved.getNomeProjeto(), saved.getCustoTotalFinal());
         return orcamentoMapper.toDto(saved);
     }
 
@@ -156,15 +171,21 @@ public class OrcamentoService {
         BigDecimal massaReal = massaTeorica.divide(ef, 6, RoundingMode.HALF_UP);
         dc.setCustoMaterial(massaReal.multiply(dc.getAramePrecoKgSnapshot()).setScale(2, RoundingMode.HALF_UP));
 
-        BigDecimal volLitros = BigDecimal.valueOf(request.tempoArcoMinutos()).multiply(BigDecimal.valueOf(dc.getGasVazaoSnapshot()));
+        // IC2: Gás (Metodologia: Fluxo ocorre durante arco + tempo morto)
+        Double tempoOperacionalTotal = request.tempoArcoMinutos() + request.tempoMortoMinutos();
+        BigDecimal volLitros = BigDecimal.valueOf(tempoOperacionalTotal).multiply(BigDecimal.valueOf(dc.getGasVazaoSnapshot()));
         BigDecimal precoL = dc.getGasPrecoM3Snapshot().divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
         dc.setCustoGas(volLitros.multiply(precoL).setScale(2, RoundingMode.HALF_UP));
 
-        BigDecimal horas = BigDecimal.valueOf(request.tempoArcoMinutos()).divide(new BigDecimal("60"), 6, RoundingMode.HALF_UP);
-        dc.setCustoEnergia(horas.multiply(params.getConsumoPotenciaKw()).multiply(dc.getTaxaEnergiaSnapshot()).setScale(2, RoundingMode.HALF_UP));
-        dc.setCustoMaquina(horas.multiply(dc.getTaxaMaquinaSnapshot()).setScale(2, RoundingMode.HALF_UP));
+        // Manutenção e Energia baseados no tempo total de operação
+        BigDecimal horasArco = BigDecimal.valueOf(request.tempoArcoMinutos()).divide(new BigDecimal("60"), 6, RoundingMode.HALF_UP);
+        BigDecimal horasTotais = BigDecimal.valueOf(tempoOperacionalTotal).divide(new BigDecimal("60"), 6, RoundingMode.HALF_UP);
+        
+        dc.setCustoEnergia(horasArco.multiply(params.getConsumoPotenciaKw()).multiply(dc.getTaxaEnergiaSnapshot()).setScale(2, RoundingMode.HALF_UP));
+        dc.setCustoMaquina(horasTotais.multiply(dc.getTaxaMaquinaSnapshot()).setScale(2, RoundingMode.HALF_UP));
 
         dc.setTempoArcoMinutos(request.tempoArcoMinutos());
+        dc.setTempoMortoMinutos(request.tempoMortoMinutos());
         dc.setMassaEstimadaKg(request.massaEstimadaKg());
         dc.setCustoTotalDC(dc.getCustoMaterial().add(dc.getCustoGas()).add(dc.getCustoEnergia()).add(dc.getCustoMaquina()));
 
@@ -201,6 +222,7 @@ public class OrcamentoService {
 
     @Transactional(readOnly = true)
     public OrcamentoResponseDTO buscarPorId(UUID id) {
+        log.info("BUSCANDO ORÇAMENTO ID: {}", id);
         Orcamento orcamento = orcamentoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Orçamento não encontrado."));
         return orcamentoMapper.toDto(orcamento);
@@ -212,5 +234,23 @@ public class OrcamentoService {
                 .stream()
                 .map(orcamentoMapper::toDto)
                 .toList();
+    }
+
+    @Transactional
+    public OrcamentoResponseDTO aprovarOrcamento(UUID id) {
+        log.info("APROVANDO ORÇAMENTO ID: {}", id);
+        Orcamento orcamento = orcamentoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Orçamento não encontrado."));
+        
+        orcamento.setStatus(StatusOrcamento.APROVADO);
+        Orcamento saved = orcamentoRepository.save(orcamento);
+        log.info("ORÇAMENTO ID {} APROVADO COM SUCESSO.", id);
+        return orcamentoMapper.toDto(saved);
+    }
+
+    @Transactional
+    public void excluirOrcamento(UUID id) {
+        log.info("EXCLUINDO ORÇAMENTO ID: {}", id);
+        orcamentoRepository.deleteById(id);
     }
 }

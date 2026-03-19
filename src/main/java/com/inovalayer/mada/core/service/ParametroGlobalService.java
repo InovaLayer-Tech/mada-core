@@ -3,9 +3,14 @@ package com.inovalayer.mada.core.service;
 import com.inovalayer.mada.core.domain.ParametroGlobal;
 import com.inovalayer.mada.core.repository.ParametroGlobalRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Serviço responsável por gerenciar as configurações globais de custos e margens.
+ */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ParametroGlobalService {
@@ -14,8 +19,6 @@ public class ParametroGlobalService {
 
     @Transactional(readOnly = true)
     public ParametroGlobal obterConfiguracao() {
-        // Como é um Singleton-like, pegamos o primeiro registro.
-        // Se não existir, deveríamos ter um seed, mas para o MVP pegamos o que houver.
         return repository.findAll().stream()
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Configuração Global não encontrada no Banco de Dados."));
@@ -23,6 +26,7 @@ public class ParametroGlobalService {
 
     @Transactional
     public ParametroGlobal atualizar(ParametroGlobal novosDados) {
+        log.info("ATUALIZANDO CONFIGURAÇÕES GLOBAIS DE TAXAS E MARGENS");
         ParametroGlobal atual = obterConfiguracao();
         
         atual.setCustoKwh(novosDados.getCustoKwh());
@@ -35,7 +39,12 @@ public class ParametroGlobalService {
         atual.setFatorRiscoK2(novosDados.getFatorRiscoK2());
         atual.setConsumoPotenciaKw(novosDados.getConsumoPotenciaKw());
         atual.setMargemLucroPercentual(novosDados.getMargemLucroPercentual());
+        atual.setTaxaImpostos(novosDados.getTaxaImpostos());
 
-        return repository.save(atual);
+        ParametroGlobal saved = repository.save(atual);
+        log.info("CONFIGURAÇÕES GLOBAIS ATUALIZADAS COM SUCESSO: Margem: {}%, Impostos: {}%", 
+                saved.getMargemLucroPercentual(), saved.getTaxaImpostos());
+        
+        return saved;
     }
 }

@@ -35,6 +35,9 @@ public class OrcamentoDC {
     @Column(name = "tempo_arco_minutos", nullable = false)
     private Double tempoArcoMinutos;
 
+    @Column(name = "tempo_morto_minutos")
+    private Double tempoMortoMinutos = 0.0;
+
     @Column(name = "massa_estimada_kg", nullable = false)
     private Double massaEstimadaKg;
 

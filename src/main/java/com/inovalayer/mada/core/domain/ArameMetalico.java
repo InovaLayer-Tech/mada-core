@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "tb_arame_metalico")
+@Table(name = "arame_metalico")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ArameMetalico extends Consumivel {
@@ -23,8 +23,6 @@ public class ArameMetalico extends Consumivel {
     @Column(name = "tipo_material", length = 50)
     private String tipoMaterial;
 
-    @Column(nullable = false)
-    private Boolean ativo = true;
 
     // Novos campos essenciais para o cálculo de volume -> massa (Fase DC)
     @Column(name = "densidade_gcm3", nullable = false)
