@@ -2,13 +2,10 @@ package com.inovalayer.mada.core.dto;
 
 import java.util.UUID;
 
-public record ClienteResponseDTO(
-    UUID id,
+public record ClienteUpdateDTO(
     String nomeCompleto,
     String email,
-    String nomeRazaoSocial,
-    String cnpj,
+    String razaoSocial,
     String setorAtuacao,
-    boolean ativo,
-    boolean vip
+    String cnpj
 ) {}

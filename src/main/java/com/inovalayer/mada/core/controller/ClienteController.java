@@ -5,9 +5,9 @@ import com.inovalayer.mada.core.mapper.ClienteMapper;
 import com.inovalayer.mada.core.service.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/clientes")
@@ -19,12 +19,19 @@ public class ClienteController {
 
     @GetMapping("/atual")
     public ResponseEntity<ClienteResponseDTO> obterPerfilAtual() {
-        // Simulação do cliente atual (pega o primeiro cadastrado no seed)
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        // Buscar cliente vinculado ao usuário autenticado
         return ResponseEntity.ok(
             service.buscarTodos().stream()
+                .filter(c -> c.getUsuario() != null && c.getUsuario().getEmail().equals(email))
                 .findFirst()
                 .map(mapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Nenhum cliente cadastrado no sistema."))
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado para o usuário logado."))
         );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClienteResponseDTO> atualizar(@PathVariable java.util.UUID id, @org.springframework.web.bind.annotation.RequestBody com.inovalayer.mada.core.dto.ClienteUpdateDTO dados) {
+        return ResponseEntity.ok(mapper.toDto(service.atualizar(id, dados)));
     }
 }

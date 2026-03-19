@@ -18,15 +18,8 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public abstract class Consumivel {
-
-    // Utilizei a anotação Include para garantir que o equals() do Java compare os objetos apenas pelo ID,
-    // evitando bugs de performance quando eu trabalhar com listas ou coleções no Hibernate.
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @EqualsAndHashCode.Include
-    private UUID id;
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+public abstract class Consumivel extends BaseEntity {
 
     @Column(nullable = false, length = 100)
     private String nome;

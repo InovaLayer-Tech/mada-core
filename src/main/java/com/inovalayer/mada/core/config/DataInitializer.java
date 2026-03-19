@@ -2,6 +2,7 @@ package com.inovalayer.mada.core.config;
 
 import com.inovalayer.mada.core.domain.Usuario;
 import com.inovalayer.mada.core.domain.UsuarioRole;
+import com.inovalayer.mada.core.repository.ClienteRepository;
 import com.inovalayer.mada.core.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 public class DataInitializer implements CommandLineRunner {
 
     private final UsuarioRepository usuarioRepository;
+    private final ClienteRepository clienteRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -33,18 +35,30 @@ public class DataInitializer implements CommandLineRunner {
             Usuario admin = new Usuario();
             admin.setEmail("admin@inovalayer.com");
             admin.setSenha(passwordEncoder.encode("admin123"));
+            admin.setNomeCompleto("Administrador do Sistema");
             admin.setRole(UsuarioRole.ADMIN);
             usuarioRepository.save(admin);
             log.info("Usuário ADMIN criado: admin@inovalayer.com / admin123");
-
+            
             // 2. Cliente de Teste
-            Usuario cliente = new Usuario();
-            cliente.setEmail("cliente@empresa.com");
-            cliente.setSenha(passwordEncoder.encode("cliente123"));
-            cliente.setRole(UsuarioRole.CLIENTE);
-            usuarioRepository.save(cliente);
-            log.info("Usuário CLIENTE criado: cliente@empresa.com / cliente123");
+            Usuario uCliente = new Usuario();
+            uCliente.setEmail("cliente@empresa.com");
+            uCliente.setSenha(passwordEncoder.encode("cliente123"));
+            uCliente.setNomeCompleto("João Silva (Gestor)");
+            uCliente.setRole(UsuarioRole.CLIENTE);
+            usuarioRepository.save(uCliente);
 
+            // Criar Entidade Cliente vinculada ao Usuario
+            com.inovalayer.mada.core.domain.Cliente cEntity = new com.inovalayer.mada.core.domain.Cliente();
+            cEntity.setUsuario(uCliente);
+            cEntity.setRazaoSocial("InovaLayer Client Corporation S/A");
+            cEntity.setCnpj("12345678000199");
+            cEntity.setEmailContato("cliente@empresa.com");
+            cEntity.setSetorAtuacao("Aeroespacial / Defesa");
+            cEntity.setVip(true);
+            clienteRepository.save(cEntity);
+
+            log.info("Usuário CLIENTE e Entidade CLIENTE criados.");
             log.info("Semeadura de usuários concluída com sucesso.");
         } else {
             log.info("Usuários já existentes na base. Pulando semeadura.");

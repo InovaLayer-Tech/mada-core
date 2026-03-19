@@ -12,22 +12,10 @@ import java.math.BigDecimal;
 @Table(name = "tb_gas_protecao")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class GasProtecao extends BaseEntity {
-
-    @Column(nullable = false, length = 100)
-    private String nome;
-
-    @Column(name = "fabricante", length = 100)
-    private String fabricante;
-
-    @Column(name = "codigo_produto", length = 50)
-    private String codigoProduto;
+public class GasProtecao extends Consumivel {
 
     @Column(name = "tipo_gas", nullable = false, length = 50)
     private String tipoGas;
-
-    @Column(name = "preco_unitario_base", nullable = false, precision = 12, scale = 2)
-    private BigDecimal precoUnitarioBase;
 
     @Column(nullable = false)
     private Boolean ativo = true;

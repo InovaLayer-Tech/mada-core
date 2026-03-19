@@ -1,0 +1,907 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< com.inovalayer:mada-core >----------------------
+[INFO] Building mada-core 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:4.0.3:run (default-cli) > test-compile @ mada-core >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ mada-core ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ mada-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 59 source files with javac [debug parameters release 23] to target\classes
+[INFO] /R:/InovaLayer 3D/inovalayer/mada-core/src/main/java/com/inovalayer/mada/core/config/I18nConfig.java: Some input files use or override a deprecated API.
+[INFO] /R:/InovaLayer 3D/inovalayer/mada-core/src/main/java/com/inovalayer/mada/core/config/I18nConfig.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ mada-core ---
+[INFO] skip non existing resourceDirectory R:\InovaLayer 3D\inovalayer\mada-core\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ mada-core ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 23] to target\test-classes
+[INFO] 
+[INFO] <<< spring-boot:4.0.3:run (default-cli) < test-compile @ mada-core <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:4.0.3:run (default-cli) @ mada-core ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.3)
+
+2026-03-19T13:59:40.989-03:00  INFO 15772 --- [mada-core] [           main] c.i.mada.core.MadaCoreApplication        : Starting MadaCoreApplication using Java 23.0.2 with PID 15772 (R:\InovaLayer 3D\inovalayer\mada-core\target\classes started by roger in R:\InovaLayer 3D\inovalayer\mada-core)
+2026-03-19T13:59:40.989-03:00  INFO 15772 --- [mada-core] [           main] c.i.mada.core.MadaCoreApplication        : No active profile set, falling back to 1 default profile: "default"
+2026-03-19T13:59:42.209-03:00  INFO 15772 --- [mada-core] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-19T13:59:42.328-03:00  INFO 15772 --- [mada-core] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 103 ms. Found 7 JPA repository interfaces.
+2026-03-19T13:59:43.161-03:00  INFO 15772 --- [mada-core] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-03-19T13:59:43.190-03:00  INFO 15772 --- [mada-core] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-19T13:59:43.191-03:00  INFO 15772 --- [mada-core] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-03-19T13:59:43.285-03:00  INFO 15772 --- [mada-core] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2177 ms
+2026-03-19T13:59:43.479-03:00  INFO 15772 --- [mada-core] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-19T13:59:43.555-03:00  INFO 15772 --- [mada-core] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-03-19T13:59:44.353-03:00  INFO 15772 --- [mada-core] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-19T13:59:44.404-03:00  INFO 15772 --- [mada-core] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-19T13:59:44.602-03:00  INFO 15772 --- [mada-core] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:mada_db user=SA
+2026-03-19T13:59:44.602-03:00  INFO 15772 --- [mada-core] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-19T13:59:44.634-03:00  WARN 15772 --- [mada-core] [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-19T13:59:44.672-03:00  INFO 15772 --- [mada-core] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:mada_db]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: MADA_DB/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+Hibernate: 
+    create global temporary table HT_tb_consumivel(id uuid not null, primary key (id)) transactional
+Hibernate: 
+    create global temporary table HTE_tb_consumivel(precoUnitarioBase numeric(12, 6), rn_ integer not null, atualizadoEm timestamp(6), criadoEm timestamp(6), id uuid, codigoProduto varchar(50), fabricante varchar(100), nome varchar(100), primary key (rn_)) transactional
+Hibernate: 
+    create global temporary table HTE_tb_arame_metalico(ativo boolean, precoUnitarioBase numeric(12, 6), rn_ integer not null, atualizadoEm timestamp(6), criadoEm timestamp(6), densidadeGcm3 float(53), diametroMm float(53), eficiencia float(53), id uuid, codigoProduto varchar(50), ligaMetalica varchar(50), tipoMaterial varchar(50), fabricante varchar(100), nome varchar(100), primary key (rn_)) transactional
+Hibernate: 
+    create global temporary table HTE_tb_gas_protecao(ativo boolean, precoUnitarioBase numeric(12, 6), rn_ integer not null, atualizadoEm timestamp(6), criadoEm timestamp(6), vazaoPadrao float(53), id uuid, codigoProduto varchar(50), tipoGas varchar(50), fabricante varchar(100), nome varchar(100), primary key (rn_)) transactional
+2026-03-19T13:59:46.524-03:00  INFO 15772 --- [mada-core] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    create table tb_arame_metalico (
+        ativo boolean not null,
+        densidade_gcm3 float(53) not null,
+        diametro_mm float(53),
+        eficiencia float(53) not null,
+        liga_metalica varchar(50),
+        tipo_material varchar(50),
+        id uuid not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table tb_cliente (
+        id uuid not null,
+        atualizado_em timestamp(6),
+        criado_em timestamp(6) not null,
+        ativo boolean not null,
+        cnpj varchar(14),
+        email_contato varchar(100),
+        razao_social varchar(150) not null,
+        setor_atuacao varchar(100),
+        vip boolean not null,
+        usuario_id uuid,
+        primary key (id)
+    )
+Hibernate: 
+    create table tb_consumivel (
+        id uuid not null,
+        atualizado_em timestamp(6),
+        criado_em timestamp(6) not null,
+        codigo_produto varchar(50) not null,
+        fabricante varchar(100) not null,
+        nome varchar(100) not null,
+        preco_unitario_base numeric(12,6) not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table tb_equipamento (
+        id uuid not null,
+        atualizado_em timestamp(6),
+        criado_em timestamp(6) not null,
+        fabricante varchar(100),
+        horas_trabalho_ano integer not null,
+        nome_equipamento varchar(150) not null,
+        potencia_kva numeric(6,2) not null,
+        valor_aquisicao numeric(12,2) not null,
+        vida_util_anos integer not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table tb_gas_protecao (
+        ativo boolean not null,
+        tipo_gas varchar(50) not null,
+        vazao_padrao float(53) not null,
+        id uuid not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table tb_orcamento (
+        id uuid not null,
+        acabamento varchar(100),
+        custo_total_final numeric(12,2) not null,
+        data_emissao timestamp(6) not null,
+        dimensao_x float(53) not null,
+        dimensao_y float(53) not null,
+        dimensao_z float(53) not null,
+        nivel_inspecao varchar(100),
+        nome_projeto varchar(100) not null,
+        preco_final_sugerido numeric(12,2) not null,
+        quantidade integer not null,
+        status enum ('APROVADO','CALCULADO','EM_EXECUCAO','FINALIZADO','PENDENTE','REJEITADO') not null,
+        tolerancia varchar(50),
+        tratamento_termico boolean not null,
+        cliente_id uuid,
+        orcamento_ic_id uuid,
+        orcamento_dc_id uuid,
+        primary key (id)
+    )
+Hibernate: 
+    create table tb_orcamento_ac (
+        id uuid not null,
+        custo_total_ac numeric(12,2) not null,
+        descricao_servico varchar(100) not null,
+        quantidade_horas float(53) not null,
+        taxa_aplicada_snapshot numeric(10,2) not null,
+        orcamento_id uuid not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table tb_orcamento_dc (
+        id uuid not null,
+        arame_densidade_snapshot float(53) not null,
+        arame_eficiencia_snapshot float(53) not null,
+        arame_preco_kg_snapshot numeric(12,2) not null,
+        custo_energia numeric(12,2) not null,
+        custo_gas numeric(12,2) not null,
+        custo_maquina numeric(12,2) not null,
+        custo_material numeric(12,2) not null,
+        custo_total_dc numeric(12,2) not null,
+        gas_preco_m3_snapshot numeric(12,2) not null,
+        gas_vazao_snapshot float(53) not null,
+        massa_estimada_kg float(53) not null,
+        taxa_energia_snapshot numeric(10,4) not null,
+        taxa_maquina_snapshot numeric(10,2) not null,
+        tempo_arco_minutos float(53) not null,
+        arame_metalico_id uuid not null,
+        gas_protecao_id uuid,
+        primary key (id)
+    )
+Hibernate: 
+    create table tb_orcamento_ic (
+        id uuid not null,
+        custo_engenharia numeric(12,2) not null,
+        custo_preparacao numeric(12,2) not null,
+        custo_remocao numeric(12,2) not null,
+        custo_setup_processo numeric(12,2) not null,
+        custo_substrato numeric(12,2) not null,
+        custo_total_ic numeric(12,2) not null,
+        quantidade_lote_snapshot integer not null,
+        taxa_engenheiro_snapshot numeric(10,2) not null,
+        taxa_mao_de_obra_snapshot numeric(10,2) not null,
+        tempo_preparacao_minutos float(53) not null,
+        tempo_remocao_minutos float(53) not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table tb_parametro_global (
+        id uuid not null,
+        atualizado_em timestamp(6),
+        criado_em timestamp(6) not null,
+        consumo_potencia_kw numeric(6,2) not null,
+        custo_kwh numeric(10,4) not null,
+        custo_tratamento_termico_fixo numeric(10,2) not null,
+        fator_risco_k1 numeric(5,2) not null,
+        fator_risco_k2 numeric(5,2) not null,
+        margem_lucro_percentual numeric(5,2) not null,
+        taxa_depreciacao_maquina_hora numeric(10,2) not null,
+        taxa_engenheiro_hora numeric(10,2) not null,
+        taxa_mao_de_obra_hora numeric(10,2) not null,
+        taxa_usinagem_hora numeric(10,2) not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table tb_usuario (
+        id uuid not null,
+        atualizado_em timestamp(6),
+        criado_em timestamp(6) not null,
+        email varchar(255) not null,
+        nome_completo varchar(255),
+        role enum ('ADMIN','CLIENTE') not null,
+        senha varchar(255) not null,
+        primary key (id)
+    )
+Hibernate: 
+    alter table if exists tb_cliente 
+       drop constraint if exists UK88fd7rfxahu9fc66c80gfvrf9
+Hibernate: 
+    alter table if exists tb_cliente 
+       add constraint UK88fd7rfxahu9fc66c80gfvrf9 unique (cnpj)
+Hibernate: 
+    alter table if exists tb_cliente 
+       drop constraint if exists UKoevfeue9lj4w4ell43xedppu9
+Hibernate: 
+    alter table if exists tb_cliente 
+       add constraint UKoevfeue9lj4w4ell43xedppu9 unique (usuario_id)
+Hibernate: 
+    alter table if exists tb_consumivel 
+       drop constraint if exists UK4rye18iqrmksswqvsesoimy97
+Hibernate: 
+    alter table if exists tb_consumivel 
+       add constraint UK4rye18iqrmksswqvsesoimy97 unique (codigo_produto)
+Hibernate: 
+    alter table if exists tb_orcamento 
+       drop constraint if exists UKtq1v6fpnyn1okrg1umi8tgr30
+Hibernate: 
+    alter table if exists tb_orcamento 
+       add constraint UKtq1v6fpnyn1okrg1umi8tgr30 unique (orcamento_ic_id)
+Hibernate: 
+    alter table if exists tb_orcamento 
+       drop constraint if exists UK32ny3q29m10uv67kcwcjcaaev
+Hibernate: 
+    alter table if exists tb_orcamento 
+       add constraint UK32ny3q29m10uv67kcwcjcaaev unique (orcamento_dc_id)
+Hibernate: 
+    alter table if exists tb_usuario 
+       drop constraint if exists UKspmnyb4dsul95fjmr5kmdmvub
+Hibernate: 
+    alter table if exists tb_usuario 
+       add constraint UKspmnyb4dsul95fjmr5kmdmvub unique (email)
+Hibernate: 
+    alter table if exists tb_arame_metalico 
+       add constraint FK1ircfdciiurmeaj5xqsk9nff5 
+       foreign key (id) 
+       references tb_consumivel
+Hibernate: 
+    alter table if exists tb_cliente 
+       add constraint FK4x99w8pcrk3btisu4aw1t0ryl 
+       foreign key (usuario_id) 
+       references tb_usuario
+Hibernate: 
+    alter table if exists tb_gas_protecao 
+       add constraint FK7mgpeb4a6qcp08762lr93bdrm 
+       foreign key (id) 
+       references tb_consumivel
+Hibernate: 
+    alter table if exists tb_orcamento 
+       add constraint FK7jur05xpfq94y8utlp12icnl2 
+       foreign key (cliente_id) 
+       references tb_cliente
+Hibernate: 
+    alter table if exists tb_orcamento 
+       add constraint FKfwexef0wbrarvnj7oxeeffu3m 
+       foreign key (orcamento_ic_id) 
+       references tb_orcamento_ic
+Hibernate: 
+    alter table if exists tb_orcamento 
+       add constraint FK3ko5wxfkpx7rjass4fndy3vyq 
+       foreign key (orcamento_dc_id) 
+       references tb_orcamento_dc
+Hibernate: 
+    alter table if exists tb_orcamento_ac 
+       add constraint FKo483nn94j8a9ct15450u9v62s 
+       foreign key (orcamento_id) 
+       references tb_orcamento
+Hibernate: 
+    alter table if exists tb_orcamento_dc 
+       add constraint FKjrm6cjtpakrc7c6cpv2bstaus 
+       foreign key (arame_metalico_id) 
+       references tb_arame_metalico
+Hibernate: 
+    alter table if exists tb_orcamento_dc 
+       add constraint FKoqbgv3783jqqih1n4jk3taj90 
+       foreign key (gas_protecao_id) 
+       references tb_gas_protecao
+2026-03-19T13:59:46.652-03:00  INFO 15772 --- [mada-core] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-19T13:59:46.722-03:00  INFO 15772 --- [mada-core] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-19T13:59:47.151-03:00  INFO 15772 --- [mada-core] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-03-19T13:59:47.985-03:00  INFO 15772 --- [mada-core] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-03-19T13:59:47.989-03:00  INFO 15772 --- [mada-core] [           main] c.i.mada.core.MadaCoreApplication        : Started MadaCoreApplication in 7.767 seconds (process running for 8.513)
+Hibernate: 
+    select
+        count(*) 
+    from
+        tb_usuario u1_0
+2026-03-19T13:59:48.602-03:00  INFO 15772 --- [mada-core] [           main] c.i.mada.core.config.DataInitializer     : Iniciando semeadura de usuários padrão...
+Hibernate: 
+    insert 
+    into
+        tb_usuario
+        (atualizado_em, criado_em, email, nome_completo, role, senha, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2026-03-19T13:59:48.750-03:00  INFO 15772 --- [mada-core] [           main] c.i.mada.core.config.DataInitializer     : Usuário ADMIN criado: admin@inovalayer.com / admin123
+Hibernate: 
+    insert 
+    into
+        tb_usuario
+        (atualizado_em, criado_em, email, nome_completo, role, senha, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        tb_cliente
+        (ativo, atualizado_em, cnpj, criado_em, email_contato, razao_social, setor_atuacao, usuario_id, vip, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-03-19T13:59:48.822-03:00  INFO 15772 --- [mada-core] [           main] c.i.mada.core.config.DataInitializer     : Usuário CLIENTE e Entidade CLIENTE criados.
+2026-03-19T13:59:48.822-03:00  INFO 15772 --- [mada-core] [           main] c.i.mada.core.config.DataInitializer     : Semeadura de usuários concluída com sucesso.
+2026-03-19T14:00:45.941-03:00  INFO 15772 --- [mada-core] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-19T14:00:45.941-03:00  INFO 15772 --- [mada-core] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-19T14:00:45.947-03:00  INFO 15772 --- [mada-core] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+DEBUG [AuthService] Tentativa de login para: admin@inovalayer.com
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+DEBUG [AuthService] Autenticação bem-sucedida para: admin@inovalayer.com
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+DEBUG [AuthService] Token gerado com sucesso para: admin@inovalayer.com
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        o1_0.id,
+        o1_0.acabamento,
+        o1_0.cliente_id,
+        o1_0.custo_total_final,
+        o1_0.data_emissao,
+        o1_0.dimensao_x,
+        o1_0.dimensao_y,
+        o1_0.dimensao_z,
+        o1_0.orcamento_ic_id,
+        o1_0.orcamento_dc_id,
+        o1_0.nivel_inspecao,
+        o1_0.nome_projeto,
+        o1_0.preco_final_sugerido,
+        o1_0.quantidade,
+        o1_0.status,
+        o1_0.tolerancia,
+        o1_0.tratamento_termico 
+    from
+        tb_orcamento o1_0
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.id=?
+Hibernate: 
+    update
+        tb_usuario 
+    set
+        atualizado_em=?,
+        email=?,
+        nome_completo=?,
+        role=?,
+        senha=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+2026-03-19T14:02:11.535-03:00 ERROR 15772 --- [mada-core] [nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+
+org.springframework.security.core.userdetails.UsernameNotFoundException: Usuário não encontrado: admin@inovalayer.com
+	at com.inovalayer.mada.core.service.CustomUserDetailsService.lambda$loadUserByUsername$0(CustomUserDetailsService.java:23) ~[classes/:na]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[na:na]
+	at com.inovalayer.mada.core.service.CustomUserDetailsService.loadUserByUsername(CustomUserDetailsService.java:23) ~[classes/:na]
+	at com.inovalayer.mada.core.config.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:49) ~[classes/:na]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:110) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:96) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:237) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:195) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:317) ~[spring-security-config-7.0.3.jar:7.0.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:355) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:272) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1779) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at java.base/java.lang.Thread.run(Thread.java:1575) ~[na:na]
+
+DEBUG [AuthService] Tentativa de login para: admin@inovalayer.com
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+DEBUG [AuthService] Erro na autenticação para admin@inovalayer.com: Usuário inexistente ou senha inválida
+DEBUG [AuthService] Tentativa de login para: cliente@empresa.com
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+DEBUG [AuthService] Autenticação bem-sucedida para: cliente@empresa.com
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+DEBUG [AuthService] Token gerado com sucesso para: cliente@empresa.com
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        o1_0.id,
+        o1_0.acabamento,
+        o1_0.cliente_id,
+        o1_0.custo_total_final,
+        o1_0.data_emissao,
+        o1_0.dimensao_x,
+        o1_0.dimensao_y,
+        o1_0.dimensao_z,
+        o1_0.orcamento_ic_id,
+        o1_0.orcamento_dc_id,
+        o1_0.nivel_inspecao,
+        o1_0.nome_projeto,
+        o1_0.preco_final_sugerido,
+        o1_0.quantidade,
+        o1_0.status,
+        o1_0.tolerancia,
+        o1_0.tratamento_termico 
+    from
+        tb_orcamento o1_0
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.atualizado_em,
+        c1_0.cnpj,
+        c1_0.criado_em,
+        c1_0.email_contato,
+        c1_0.razao_social,
+        c1_0.setor_atuacao,
+        c1_0.usuario_id,
+        c1_0.vip 
+    from
+        tb_cliente c1_0
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.atualizado_em,
+        c1_0.cnpj,
+        c1_0.criado_em,
+        c1_0.email_contato,
+        c1_0.razao_social,
+        c1_0.setor_atuacao,
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha,
+        c1_0.vip 
+    from
+        tb_cliente c1_0 
+    left join
+        tb_usuario u1_0 
+            on u1_0.id=c1_0.usuario_id 
+    where
+        c1_0.id=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.atualizado_em,
+        c1_0.cnpj,
+        c1_0.criado_em,
+        c1_0.email_contato,
+        c1_0.razao_social,
+        c1_0.setor_atuacao,
+        c1_0.usuario_id,
+        c1_0.vip 
+    from
+        tb_cliente c1_0
+Hibernate: 
+    update
+        tb_usuario 
+    set
+        atualizado_em=?,
+        email=?,
+        nome_completo=?,
+        role=?,
+        senha=? 
+    where
+        id=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+2026-03-19T14:05:19.291-03:00 ERROR 15772 --- [mada-core] [nio-8080-exec-4] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+
+org.springframework.security.core.userdetails.UsernameNotFoundException: Usuário não encontrado: cliente@empresa.com
+	at com.inovalayer.mada.core.service.CustomUserDetailsService.lambda$loadUserByUsername$0(CustomUserDetailsService.java:23) ~[classes/:na]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[na:na]
+	at com.inovalayer.mada.core.service.CustomUserDetailsService.loadUserByUsername(CustomUserDetailsService.java:23) ~[classes/:na]
+	at com.inovalayer.mada.core.config.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:49) ~[classes/:na]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:110) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:96) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:380) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:237) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:195) ~[spring-security-web-7.0.3.jar:7.0.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:317) ~[spring-security-config-7.0.3.jar:7.0.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:355) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:272) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1779) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at java.base/java.lang.Thread.run(Thread.java:1575) ~[na:na]
+
+DEBUG [AuthService] Tentativa de login para: cliente@empresa.com
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+DEBUG [AuthService] Erro na autenticação para cliente@empresa.com: Usuário inexistente ou senha inválida
+DEBUG [AuthService] Tentativa de login para: admin@inovalayer.com
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+DEBUG [AuthService] Erro na autenticação para admin@inovalayer.com: Usuário inexistente ou senha inválida
+DEBUG [AuthService] Tentativa de login para: cliente@empresa.com
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.atualizado_em,
+        u1_0.criado_em,
+        u1_0.email,
+        u1_0.nome_completo,
+        u1_0.role,
+        u1_0.senha 
+    from
+        tb_usuario u1_0 
+    where
+        u1_0.email=?
+DEBUG [AuthService] Erro na autenticação para cliente@empresa.com: Usuário inexistente ou senha inválida
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  12:12 min
+[INFO] Finished at: 2026-03-19T14:11:39-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:4.0.3:run (default-cli) on project mada-core: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

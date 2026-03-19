@@ -29,6 +29,9 @@ public class Usuario extends BaseEntity implements UserDetails {
     @Column(nullable = false)
     private String senha;
 
+    @Column(name = "nome_completo")
+    private String nomeCompleto;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UsuarioRole role;

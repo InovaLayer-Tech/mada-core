@@ -12,16 +12,7 @@ import java.math.BigDecimal;
 @Table(name = "tb_arame_metalico")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ArameMetalico extends BaseEntity {
-
-    @Column(nullable = false, length = 100)
-    private String nome;
-
-    @Column(name = "fabricante", length = 100)
-    private String fabricante;
-
-    @Column(name = "codigo_produto", length = 50)
-    private String codigoProduto;
+public class ArameMetalico extends Consumivel {
 
     @Column(name = "liga_metalica", length = 50)
     private String ligaMetalica;
@@ -31,9 +22,6 @@ public class ArameMetalico extends BaseEntity {
 
     @Column(name = "tipo_material", length = 50)
     private String tipoMaterial;
-
-    @Column(name = "preco_unitario_base", nullable = false, precision = 12, scale = 2)
-    private BigDecimal precoUnitarioBase;
 
     @Column(nullable = false)
     private Boolean ativo = true;

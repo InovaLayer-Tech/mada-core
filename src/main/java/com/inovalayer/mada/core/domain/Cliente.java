@@ -15,12 +15,16 @@ import lombok.Setter;
 @Table(name = "tb_cliente") // O prefixo tb_ organiza visualmente o banco de dados
 public class Cliente extends BaseEntity {
 
+    @jakarta.persistence.OneToOne
+    @jakarta.persistence.JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
     // Defino tamanho máximo e garanto que a razão social não pode ser nula
     @Column(name = "razao_social", nullable = false, length = 150)
     private String razaoSocial;
 
-    // CNPJ deve ser único (unique = true). Evita duplicidade de cadastro no banco.
-    @Column(name = "cnpj", nullable = false, unique = true, length = 14)
+    // CNPJ pode ser preenchido posteriormente no perfil.
+    @Column(name = "cnpj", nullable = true, unique = true, length = 14)
     private String cnpj;
 
     @Column(name = "email_contato", length = 100)

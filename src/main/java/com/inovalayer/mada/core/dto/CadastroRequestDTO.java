@@ -18,7 +18,6 @@ public class CadastroRequestDTO {
     @NotBlank(message = "O nome completo é obrigatório")
     private String nomeCompleto;
 
-    @NotBlank(message = "O nome da empresa é obrigatório")
     private String nomeEmpresa;
 
     @NotBlank(message = "O e-mail é obrigatório")

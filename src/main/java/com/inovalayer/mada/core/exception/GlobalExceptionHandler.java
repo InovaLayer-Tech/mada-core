@@ -48,8 +48,20 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
+    @ExceptionHandler(org.springframework.security.core.AuthenticationException.class)
+    public ProblemDetail handleAuthenticationException(org.springframework.security.core.AuthenticationException ex, HttpServletRequest request) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        problemDetail.setTitle("Falha na Autenticação");
+        problemDetail.setType(URI.create("https://inovalayer.com/errors/unauthorized"));
+        problemDetail.setInstance(URI.create(request.getRequestURI()));
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        return problemDetail;
+    }
+
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGenericException(Exception ex, HttpServletRequest request) {
+        // Log para depuração
+        ex.printStackTrace();
         String detail = messageSource.getMessage("Erro.Servidor", null, "Ocorreu um erro interno", LocaleContextHolder.getLocale());
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, detail);
         problemDetail.setTitle("Erro Interno do Servidor");
